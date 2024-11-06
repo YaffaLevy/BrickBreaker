@@ -1,13 +1,13 @@
 package levy.brickBreaker;
 
-public class Brick {
+public class Bricks {
     private int x;
     private int y;
     private int width;
     private int height;
     private boolean destroyed;
 
-    public Brick(int x, int y, int width, int height) {
+    public Bricks(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;

@@ -1,10 +1,10 @@
 package reiff.brickBreaker;
 
-import lesser.brickBuilder.BrickBreakerComponent;
 import levy.brickBreaker.Ball;
-import levy.brickBreaker.Brick;
+import levy.brickBreaker.Bricks;
 import levy.brickBreaker.Paddle;
 import levy.brickBreaker.Wall;
+import lesser.brickBuilder.BrickBreakerComponent;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,18 +14,26 @@ import java.util.List;
 public class Controller {
     private Ball ball;
     private Paddle paddle;
-    private List<Brick> bricks;
+    private List<Bricks> bricks;
     private List<Wall> walls;
     private BrickBreakerComponent view;
     private Timer timer;
 
-    public Controller(Ball ball, Paddle paddle, List<Brick> bricks, List<Wall> walls, BrickBreakerComponent view) {
+    public Controller(Ball ball, Paddle paddle, List<Bricks> bricks, List<Wall> walls, BrickBreakerComponent view) {
         this.ball = ball;
         this.paddle = paddle;
         this.bricks = bricks;
         this.walls = walls;
         this.view = view;
 
+        // Initialize and start the timer
+        timer = new Timer(16, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateBallPosition();
+            }
+        });
+        timer.start();
     }
 
     public void updateBallPosition() {
@@ -38,18 +46,6 @@ public class Controller {
 
         checkCollisions();
         view.repaint();  // Trigger view refresh to show updated positions
-    }
-
-    public void movePaddleLeft() {
-        int newX = paddle.getX() - paddle.getSpeed();
-        paddle.setX(Math.max(0, newX));
-        view.repaint();
-    }
-
-    public void movePaddleRight() {
-        int newX = paddle.getX() + paddle.getSpeed();
-        paddle.setX(Math.min(newX, view.getWidth() - paddle.getWidth()));
-        view.repaint();
     }
 
     private void checkCollisions() {
@@ -76,13 +72,12 @@ public class Controller {
     }
 
     private void checkBrickCollisions() {
-        for (Brick brick : bricks) {
+        for (Bricks brick : bricks) {
             if (!brick.isDestroyed() &&
                     ball.getX() + ball.getDiameter() >= brick.getX() &&
                     ball.getX() <= brick.getX() + brick.getWidth() &&
                     ball.getY() + ball.getDiameter() >= brick.getY() &&
                     ball.getY() <= brick.getY() + brick.getHeight()) {
-
                 brick.setDestroyed(true);
                 ball.setDirectionDegrees(-ball.getDirectionDegrees());
                 break;
