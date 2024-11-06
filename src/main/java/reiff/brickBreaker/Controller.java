@@ -12,22 +12,19 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class Controller {
-    private Ball ball;
-    private Paddle paddle;
-    private List<Bricks> bricks;
-    private List<Wall> walls;
-    private BrickBreakerComponent view;
-    private Timer timer;
+    private final Ball ball;
+    private final Paddle paddle;
+    private final List<Bricks> bricks;
+    private final BrickBreakerComponent view;
 
-    public Controller(Ball ball, Paddle paddle, List<Bricks> bricks, List<Wall> walls, BrickBreakerComponent view) {
+    public Controller(Ball ball, Paddle paddle, List<Bricks> bricks, BrickBreakerComponent view) {
         this.ball = ball;
         this.paddle = paddle;
         this.bricks = bricks;
-        this.walls = walls;
         this.view = view;
 
         // Initialize and start the timer
-        timer = new Timer(16, new ActionListener() {
+        Timer timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateBallPosition();
@@ -73,7 +70,7 @@ public class Controller {
 
     private void checkBrickCollisions() {
         for (Bricks brick : bricks) {
-            if (!brick.isDestroyed() &&
+            if (brick.isDestroyed() &&
                     ball.getX() + ball.getDiameter() >= brick.getX() &&
                     ball.getX() <= brick.getX() + brick.getWidth() &&
                     ball.getY() + ball.getDiameter() >= brick.getY() &&

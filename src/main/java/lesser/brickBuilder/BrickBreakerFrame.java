@@ -1,8 +1,8 @@
 package lesser.brickBuilder;
 
 import levy.brickBreaker.Ball;
-import levy.brickBreaker.Bricks;
 import levy.brickBreaker.Paddle;
+import levy.brickBreaker.Bricks;
 import levy.brickBreaker.Wall;
 import reiff.brickBreaker.Controller;
 
@@ -12,13 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BrickBreakerFrame extends JFrame {
-
-    private Ball ball;
-    private Paddle paddle;
-    private List<Bricks> bricks;
-    private List<Wall> walls;
-    private BrickBreakerComponent view;
-    private Controller controller;
+    private final Paddle paddle;
+    private final List<Bricks> bricks;
+    private final BrickBreakerComponent view;
+    private final Controller controller;
 
     public BrickBreakerFrame() {
         // Set up the frame properties
@@ -28,26 +25,26 @@ public class BrickBreakerFrame extends JFrame {
         setLocationRelativeTo(null);
 
         // Initialize the game components
-        ball = new Ball(400, 500, 20, 5, 45);  // Example initial position, speed, and angle
+        Ball ball = new Ball(400, 500, 20, 5, 45);  // Example initial position, speed, and angle
         paddle = new Paddle(350, 550, 100, 10, 10); // Example paddle position
-       // bricks = new ArrayList<>();  // Initialize with your bricks
+        bricks = new ArrayList<>();  // Initialize with bricks
+        List<Wall> walls = new ArrayList<>();   // Initialize with walls if needed
 
-        // Fill bricks and walls with instances as needed here
+        // Populate bricks
+        initializeBricks();
 
         // Create the view component
-        view = new BrickBreakerComponent();
+        view = new BrickBreakerComponent(ball, paddle, bricks);
         add(view);
 
         // Initialize and assign the controller
-        controller = new Controller(ball, paddle, bricks, walls, view);
+        controller = new Controller(ball, paddle, bricks, view);
 
         // Mouse listener to trigger ball movement on mouse click
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                // Debugging output to check if mouse is clicked
-                System.out.println("Mouse clicked at: " + e.getX() + ", " + e.getY());
-                // Trigger the ball movement when mouse is pressed
+                // Start the game when the mouse is pressed
                 controller.updateBallPosition();
             }
         });
@@ -56,13 +53,10 @@ public class BrickBreakerFrame extends JFrame {
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                // Debugging output to check mouse position
-                System.out.println("Mouse dragged at: " + e.getX() + ", " + e.getY());
                 // Move the paddle horizontally based on mouse position
                 int newPaddleX = e.getX() - paddle.getWidth() / 2; // Keep the paddle centered on the mouse
                 // Constrain within frame
                 paddle.setX(Math.max(0, Math.min(newPaddleX, getWidth() - paddle.getWidth())));
-                System.out.println("Paddle position updated to: " + paddle.getX()); // Debugging paddle position
                 view.repaint(); // Repaint the view to reflect the paddle movement
             }
         });
@@ -71,5 +65,18 @@ public class BrickBreakerFrame extends JFrame {
         setFocusable(true);
         pack();
         setVisible(true);
+
+        // Start a game loop with a timer
+        Timer gameTimer = new Timer(10, e -> {
+            controller.updateBallPosition();
+        });
+        gameTimer.start();
+    }
+
+    private void initializeBricks() {
+        // Add some bricks to the game
+        for (int i = 0; i < 10; i++) {
+            bricks.add(new Bricks(60 * i + 40, 100, 60, 20));
+        }
     }
 }

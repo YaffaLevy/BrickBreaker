@@ -20,6 +20,6 @@ public class Bricks {
     public int getY() { return y; }
     public int getWidth() { return width; }
     public int getHeight() { return height; }
-    public boolean isDestroyed() { return destroyed; }
+    public boolean isDestroyed() { return !destroyed; }
     public void setDestroyed(boolean destroyed) { this.destroyed = destroyed; }
 }

@@ -27,12 +27,4 @@ public class Paddle {
     public int getSpeed() { return speed; }
     public void setSpeed(int speed) { this.speed = speed; }
 
-
-    public void moveLeft() {
-        x -= speed;
-    }
-
-    public void moveRight() {
-        x += speed;
-    }
 }
