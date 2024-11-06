@@ -14,3 +14,5 @@ public class Bricks {
         return destroyed;
     }
 }
+
+
