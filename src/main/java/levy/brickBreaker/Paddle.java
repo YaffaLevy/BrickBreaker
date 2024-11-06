@@ -1,15 +1,13 @@
 package levy.brickBreaker;
 
-public class Paddle {
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+import java.awt.geom.Rectangle2D;
+
+public class Paddle extends Rectangle2D.Double {
+
     private int speed;
 
-    public Paddle(int x, int y, int width, int height, int speed) {
-        this.x = x;
-        this.y = y;
+    public Paddle(double x, double y, double width, double height, int speed) {
+        super(x,y,width, height);
         this.width = width;
         this.height = height;
         this.speed = speed;
