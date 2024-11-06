@@ -23,7 +23,6 @@ public class Controller {
         this.bricks = bricks;
         this.view = view;
 
-        // Initialize and start the timer
         Timer timer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -42,7 +41,7 @@ public class Controller {
         ball.setY(ball.getY() + dy);
 
         checkCollisions();
-        view.repaint();  // Trigger view refresh to show updated positions
+        view.repaint();
     }
 
     private void checkCollisions() {

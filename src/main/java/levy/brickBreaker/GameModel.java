@@ -1,26 +1,34 @@
 package levy.brickBreaker;
 
-import java.util.List;
+import java.awt.geom.Ellipse2D;
 
-public class GameModel {
-    private Ball ball;
-    private Paddle paddle;
-    private List<Bricks> bricks;
-    private List<Wall> walls;
+public class Ball extends Ellipse2D.Double {
+    private double directionDegrees;
+    private double speed;
 
-    public GameModel(Ball ball, Paddle paddle, List<Bricks> bricks, List<Wall> walls) {
-        this.ball = ball;
-        this.paddle = paddle;
-        this.bricks = bricks;
-        this.walls = walls;
+    public Ball(double x, double y, double diameter, double speed, double directionDegrees) {
+        super(x, y, diameter, diameter);
+        this.speed = speed;
+        this.directionDegrees = directionDegrees;
     }
-    public Ball getBall() { return ball; }
-    public Paddle getPaddle() { return paddle; }
-    public List<Bricks> getBricks() { return bricks; }
-    public List<Wall> getWalls() { return walls; }
 
-    public void updateBallPosition(double x, double y) {
-        ball.setX(x);
-        ball.setY(y);
+    public double getDirectionDegrees() {
+        return directionDegrees;
+    }
+
+    public void setDirectionDegrees(double directionDegrees) {
+        this.directionDegrees = directionDegrees;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public void setPosition(double x, double y) {
+        setFrame(x, y, width, height);
     }
 }
