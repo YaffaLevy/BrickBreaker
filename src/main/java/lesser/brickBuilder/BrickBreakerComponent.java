@@ -27,22 +27,24 @@ public class BrickBreakerComponent extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Draw background
-        setBackground(new Color(15, 15, 30));  // Dark background
+        Graphics2D g2 = (Graphics2D) g;
 
-        // Draw paddle
+        setBackground(new Color(15, 15, 30));
+
         g.setColor(Color.LIGHT_GRAY);
-        g.fillRoundRect(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight(), 20, 20);
+        g2.fill(paddle);
+        //g.fillRoundRect(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight(), 20, 20);
 
-        // Draw ball
         g.setColor(Color.WHITE);
-        g.fillOval((int)ball.getX(), (int)ball.getY(), (int) ball.getDiameter(), (int) ball.getDiameter());
+        g2.fill(ball);
+        //g.fillOval((int)ball.getX(), (int)ball.getY(), (int) ball.getDiameter(), (int) ball.getDiameter());
 
-        // Draw bricks
+
         for (Bricks brick : bricks) {
-            if (brick.isDestroyed()) {
-                g.setColor(Color.CYAN); // You can use brick.getColor() for more variety
-                g.fillRect(brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight());
+            if (!brick.isDestroyed()) {
+                g.setColor(Color.CYAN);
+                g2.fill(brick);
+                //g.fillRect(brick.getX(), brick.getY(), brick.getWidth(), brick.getHeight());
             }
         }
     }

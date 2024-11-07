@@ -31,7 +31,7 @@ public class Controller {
         });
         timer.start();
     }
-
+// check which timer to use
     public void updateBallPosition() {
         double radians = Math.toRadians(ball.getDirectionDegrees());
         double dx = Math.cos(radians) * ball.getSpeed();
