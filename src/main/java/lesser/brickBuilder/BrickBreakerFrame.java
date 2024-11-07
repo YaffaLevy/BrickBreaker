@@ -15,7 +15,6 @@ public class BrickBreakerFrame extends JFrame {
     private final Paddle paddle;
     private final List<Bricks> bricks;
     private final BrickBreakerComponent view;
-    //b
     private final Controller controller;
 
     public BrickBreakerFrame() {
