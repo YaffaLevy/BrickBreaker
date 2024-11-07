@@ -1,3 +1,5 @@
+package reiff.brickBreaker;
+
 import levy.brickBreaker.Ball;
 import levy.brickBreaker.Bricks;
 import levy.brickBreaker.Paddle;
