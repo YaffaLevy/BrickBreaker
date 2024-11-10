@@ -46,7 +46,6 @@ public class Controller {
         else if (ball.getY() <= 0) {
             ball.setDirectionDegrees(-ball.getDirectionDegrees());
         }
-
     }
 
 
