@@ -37,5 +37,12 @@ public class Ball extends Ellipse2D.Double {
     public void setDirectionDegrees(double directionDegrees) {
         this.directionDegrees = directionDegrees;
     }
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
 
 }
