@@ -7,7 +7,7 @@ public class Bricks extends Rectangle2D.Double {
 
     public Bricks(double x, double y, double width, double height) {
         super(x,y,width, height);
-        this.destroyed = true;
+        this.destroyed = false;
     }
 
     public boolean isDestroyed() {
