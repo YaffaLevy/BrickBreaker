@@ -3,90 +3,131 @@ package lesser.brickBuilder;
 import levy.brickBreaker.Ball;
 import levy.brickBreaker.Paddle;
 import levy.brickBreaker.Bricks;
-import levy.brickBreaker.Wall;
-import reiff.brickBreaker.Controller;
 
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BrickBreakerFrame extends JFrame {
-    private final Ball ball = new Ball(400, 500, 20, 20, 20, 15, 45);
-    private final Paddle paddle = new Paddle(350, 550, 100, 10, 10);
+    private static final int COLS = 10; // Number of columns of bricks
+    private static final int ROWS = 5;  // Number of rows of bricks
+    private static final int BRICK_WIDTH = 60;  // Width of each brick
+    private static final int BRICK_HEIGHT = 20; // Height of each brick
+    private static final int SPACING = 10; // Space between bricks
+
+    private final Ball ball = new Ball(390, 530, 20, 20, 20, 5, 45); // Ball(x, y, width, height, diameter, speed, directionDegrees)
+    private final Paddle paddle = new Paddle(350, 550, 100, 10, 20); // Paddle(x, y, width, height, speed)
     private final List<Bricks> bricks = new ArrayList<>();
-    private final List<Wall> walls = new ArrayList<>();
     private final BrickBreakerComponent view = new BrickBreakerComponent(ball, paddle, bricks);
-    private final Controller controller = new Controller(ball, paddle, bricks, view);
+    private boolean ballMoving = false; // Track ball state locally
 
     public BrickBreakerFrame() {
         // Set up the frame properties
         setSize(800, 600);
         setTitle("Brick Breaker");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); //sets the frame to the center of the screen
+        setLocationRelativeTo(null);
+        setLayout(null);
+
+        // Add the game view to the frame
+        add(view);
+        view.setBounds(0, 0, 800, 600);
+
+        setFocusable(true);
+        requestFocusInWindow();
+
         initializeBricks();
 
-        // Mouse listener to trigger ball movement on mouse click
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                controller.updateBallPosition();
-            }
-        });
-
-        // Uses the keyboard arrows for the paddle
+        // Add KeyListener for paddle movement and launching the ball
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
-                int paddleSpeed = 10;
+                int paddleSpeed = paddle.getSpeed();
 
+                // Move paddle left or right
                 if (keyCode == KeyEvent.VK_LEFT) {
-                    double newPaddleX = Math.max(0, paddle.getX() - paddleSpeed);
-                    paddle.setRect(newPaddleX, (int) paddle.getY(), paddle.getWidth(), paddle.getHeight());
+                    paddle.x = Math.max(0, paddle.x - paddleSpeed);
                 } else if (keyCode == KeyEvent.VK_RIGHT) {
-                    double newPaddleX = Math.min(getWidth() - paddle.getWidth(), paddle.getX() + paddleSpeed);
-                    paddle.setRect(newPaddleX, (int) paddle.getY(), paddle.getWidth(), paddle.getHeight());
+                    paddle.x = Math.min(view.getWidth() - paddle.width, paddle.x + paddleSpeed);
+                }
+
+                // Launch the ball
+                if (keyCode == KeyEvent.VK_UP && !ballMoving) {
+                    ballMoving = true;
                 }
 
                 view.repaint();
             }
         });
 
-        setFocusable(true); //this uses focus to get the input from the keyboard
-        requestFocusInWindow(); //makes sure that focus can be used in the frame
-        setVisible(true); //ensures the frame is visible when the program runs
-
         // Start a game loop with a timer
         Timer gameTimer = new Timer(10, e -> {
-            controller.updateBallPosition();
+            if (ballMoving) {
+                updateBallPosition();
+            }
+            view.repaint();
         });
         gameTimer.start();
+
+        setVisible(true);
     }
 
     private void initializeBricks() {
-        int brickWidth = 60;
-        int brickHeight = 20;
-        int numRows = 5;
+        Random random = new Random();
+        int xOffset = (getWidth() - (COLS * (BRICK_WIDTH + SPACING) - SPACING)) / 2;
 
-        // Calculate how many bricks can fit in the width of the window
-        int numBricksPerRow = getWidth() / brickWidth;
-
-        // Calculate the starting x position to center the bricks
-        int horizontalPadding = (getWidth() - numBricksPerRow * brickWidth) / 2;
-
-        // Randomly scatter bricks within window bounds, centered horizontally
-        for (int row = 0; row < numRows; row++) {
-            int y = 100 + row * (brickHeight + 10);
-
-            // Create bricks in the current row
-            for (int i = 0; i < numBricksPerRow; i++) {
-                int x = horizontalPadding + i * brickWidth;
-
-                // Create and add the brick to the list
-                bricks.add(new Bricks(x, y, brickWidth, brickHeight));
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (random.nextBoolean()) { // Randomly decide whether to place a brick
+                    int x = xOffset + col * (BRICK_WIDTH + SPACING);
+                    int y = 50 + row * (BRICK_HEIGHT + SPACING); // Start at y=50 for top position
+                    bricks.add(new Bricks(x, y, BRICK_WIDTH, BRICK_HEIGHT));
+                }
             }
+        }
+    }
+
+    private void updateBallPosition() {
+        // Convert direction to radians for calculation
+        double radians = Math.toRadians(ball.getDirectionDegrees());
+        double dx = ball.getSpeed() * Math.cos(radians);
+        double dy = ball.getSpeed() * Math.sin(radians);
+
+        // Update ball position
+        ball.setX(ball.getX() + dx);
+        ball.setY(ball.getY() - dy); // Subtract dy because y decreases as the ball moves upward
+
+        // Ball collision with walls
+        if (ball.getX() <= 0 || ball.getX() + ball.getDiameter() >= view.getWidth()) {
+            ball.setDirectionDegrees(180 - ball.getDirectionDegrees());
+        }
+        if (ball.getY() <= 0) {
+            ball.setDirectionDegrees(-ball.getDirectionDegrees());
+        }
+
+        // Ball collision with paddle
+        if (ball.intersects(paddle)) {
+            ball.setDirectionDegrees(-ball.getDirectionDegrees());
+        }
+
+        // Ball collision with bricks
+        for (Bricks brick : bricks) {
+            if (!brick.isDestroyed() && ball.intersects(brick)) {
+                brick.setDestroyed(true);
+                ball.setDirectionDegrees(-ball.getDirectionDegrees());
+                break;
+            }
+        }
+
+        // Ball falls below the screen
+        if (ball.getY() >= view.getHeight()) {
+            ballMoving = false; // Stop the ball
+            ball.setX(390); // Reset ball position
+            ball.setY(530);
+            ball.setDirectionDegrees(45); // Reset direction
         }
     }
 }
