@@ -12,7 +12,6 @@ public class Controller {
     private final Paddle paddle;
     private final List<Bricks> bricks;
     private final BrickBreakerComponent view;
-    private Wall wall;
 
     public Controller(Ball ball, Paddle paddle, List<Bricks> bricks, BrickBreakerComponent view) {
         this.ball = ball;
