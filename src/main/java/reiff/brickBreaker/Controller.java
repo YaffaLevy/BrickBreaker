@@ -5,10 +5,6 @@ import levy.brickBreaker.Bricks;
 import levy.brickBreaker.Paddle;
 import levy.brickBreaker.Wall;
 import lesser.brickBuilder.BrickBreakerComponent;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class Controller {
@@ -26,8 +22,6 @@ public class Controller {
 
     }
 
-
-// check which timer to use
     public void updateBallPosition() {
         double radians = Math.toRadians(ball.getDirectionDegrees());
         double dx = Math.cos(radians) * ball.getSpeed();
@@ -47,14 +41,8 @@ public class Controller {
     }
 
     private void checkWallCollisions() {
-        // Check for collision with left or right wall (horizontal reflection)
-        if (ball.getX() <= 0 || ball.getX() >= view.getWidth() - ball.getDiameter()) {
-            ball.setDirectionDegrees((180 - ball.getDirectionDegrees() + 360) % 360);
-        }
-
-        // Check for collision with top or bottom wall (vertical reflection)
-        if (ball.getY() <= 0 || ball.getY() >= view.getHeight() - ball.getDiameter()) {
-            ball.setDirectionDegrees((360 - ball.getDirectionDegrees()) % 360);
+        if (ball.getX() <= 0 || ball.getX() >= view.getWidth() - ball.getDiameter() || ball.getY() <= 0 ) {
+            ball.setDirectionDegrees(-ball.getDirectionDegrees());
         }
     }
 
@@ -64,46 +52,36 @@ public class Controller {
                 ball.getX() >= paddle.getX() &&
                 ball.getX() <= paddle.getX() + paddle.getWidth()) {
 
-            // Define key positions on the paddle
             double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
             double edgeZoneWidth = paddle.getWidth() * 0.1;
 
             double leftEdgeEnd = paddle.getX() + edgeZoneWidth;
-            double leftHalfEnd = paddleCenterX;
-            double rightHalfStart = paddleCenterX;
             double rightEdgeStart = paddle.getX() + paddle.getWidth() - edgeZoneWidth;
 
             double ballAngle = ball.getDirectionDegrees();
 
-            // Check and respond to collisions with specific paddle sections
             if (ball.getX() >= leftEdgeEnd &&
-                    ball.getX() <= leftHalfEnd &&
+                    ball.getX() <= paddleCenterX &&
                     (ballAngle > 270 || ballAngle < 90)) {
-                // Ball hits left half from the right side
-                ball.setDirectionDegrees((180 - ballAngle + 360) % 360);
+                ball.setDirectionDegrees((180 + ball.getDirectionDegrees()) % 360);
             }
             else if (ball.getX() <= rightEdgeStart &&
-                    ball.getX() >= rightHalfStart &&
+                    ball.getX() >= paddleCenterX &&
                     (ballAngle > 90 && ballAngle < 270)) {
-                // Ball hits right half from the left side
-                ball.setDirectionDegrees((180 - ballAngle + 360) % 360);
+                ball.setDirectionDegrees((180 + ball.getDirectionDegrees()) % 360);
             }
             else if ((ball.getX() <= leftEdgeEnd && ballAngle > 270) ||
                     (ball.getX() >= rightEdgeStart && ballAngle < 90)) {
-                // Ball hits edge zones
-                ball.setDirectionDegrees((360 - ballAngle) % 360);
+                ball.setDirectionDegrees(-ball.getDirectionDegrees());
             }
             else if (ball.getX() >= paddleCenterX - 2 && ball.getX() <= paddleCenterX + 2) {
-                // Ball hits the center of the paddle
-                ball.setDirectionDegrees(270); // Bounces straight up
+                ball.setDirectionDegrees(270);
             }
             else {
-                // Default vertical bounce if no other case matches
-                ball.setDirectionDegrees((360 - ballAngle) % 360);
+                ball.setDirectionDegrees(-ball.getDirectionDegrees());
             }
         }
     }
-
 
 
     private void checkBrickCollisions() {
