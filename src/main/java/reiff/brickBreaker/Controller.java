@@ -41,7 +41,7 @@ public class Controller {
     }
 
     private void checkWallCollisions() {
-        if (ball.getX() <= 0 || ball.getX() >= view.getWidth() - ball.getDiameter() || ball.getY() <= 0 ) {
+        if (ball.getX() <= 0 || ball.getX() >= view.getWidth() - ball.getDiameter() || ball.getY() <= 0) {
             ball.setDirectionDegrees(-ball.getDirectionDegrees());
         }
     }
@@ -64,20 +64,16 @@ public class Controller {
                     ball.getX() <= paddleCenterX &&
                     (ballAngle > 270 || ballAngle < 90)) {
                 ball.setDirectionDegrees((180 + ball.getDirectionDegrees()) % 360);
-            }
-            else if (ball.getX() <= rightEdgeStart &&
+            } else if (ball.getX() <= rightEdgeStart &&
                     ball.getX() >= paddleCenterX &&
                     (ballAngle > 90 && ballAngle < 270)) {
                 ball.setDirectionDegrees((180 + ball.getDirectionDegrees()) % 360);
-            }
-            else if ((ball.getX() <= leftEdgeEnd && ballAngle > 270) ||
+            } else if ((ball.getX() <= leftEdgeEnd && ballAngle > 270) ||
                     (ball.getX() >= rightEdgeStart && ballAngle < 90)) {
                 ball.setDirectionDegrees(-ball.getDirectionDegrees());
-            }
-            else if (ball.getX() >= paddleCenterX - 2 && ball.getX() <= paddleCenterX + 2) {
+            } else if (ball.getX() >= paddleCenterX - 2 && ball.getX() <= paddleCenterX + 2) {
                 ball.setDirectionDegrees(270);
-            }
-            else {
+            } else {
                 ball.setDirectionDegrees(-ball.getDirectionDegrees());
             }
         }
