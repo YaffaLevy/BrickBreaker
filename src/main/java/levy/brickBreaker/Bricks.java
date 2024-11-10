@@ -16,7 +16,17 @@ public class Bricks extends Rectangle2D.Double {
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
     }
+    public void setX(double x) {
+        this.x = x;
+    }
 
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setPosition(double x, double y) {
+        setRect(x, y, this.width, this.height);
+    }
 }
 
 

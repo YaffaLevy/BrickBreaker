@@ -25,6 +25,7 @@ public class BrickBreakerFrame extends JFrame {
         setTitle("Brick Breaker");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null); //sets the frame to the center of the screen
+
         initializeBricks();
 
         // Mouse listener to trigger ball movement on mouse click
