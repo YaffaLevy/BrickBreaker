@@ -40,10 +40,16 @@ public class Controller {
     }
 
     private void checkWallCollisions() {
-        if (ball.getX() <= 0 || ball.getX() >= view.getWidth() - ball.getDiameter() || ball.getY() <= 0) {
+        if (ball.getX() <= 0 || ball.getX() >= view.getWidth() - ball.getDiameter()) {
+            ball.setDirectionDegrees(180 - ball.getDirectionDegrees());
+        }
+        else if (ball.getY() <= 0) {
             ball.setDirectionDegrees(-ball.getDirectionDegrees());
         }
+
     }
+
+
 
 
     private void checkPaddleCollision() {
