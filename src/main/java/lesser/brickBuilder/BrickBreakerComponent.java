@@ -36,7 +36,7 @@ public class BrickBreakerComponent extends JComponent {
         Graphics2D g2 = (Graphics2D) g;
 
         // Set background
-        g.setColor(new Color(173, 216, 230));
+        g.setColor(new Color(0,0,0));
         g.fillRect(0, 0, getWidth(), getHeight());
 
         // Draw paddle
@@ -50,7 +50,7 @@ public class BrickBreakerComponent extends JComponent {
         // Draw bricks
         for (Bricks brick : bricks) {
             if (!brick.isDestroyed()) {
-                g.setColor(brickColors.getOrDefault(brick, Color.RED)); // Default to red if no color
+                g.setColor(brickColors.getOrDefault(brick, Color.GREEN)); // Default to red if no color
                 g2.fill(brick);
             }
         }
