@@ -15,7 +15,6 @@ public class BrickBreakerComponent extends JComponent {
     private final Paddle paddle;
     private final List<Bricks> bricks;
 
-    // Map to store colors for each brick
     private final Map<Bricks, Color> brickColors = new HashMap<>();
 
     public BrickBreakerComponent(Ball ball, Paddle paddle, List<Bricks> bricks) {
@@ -23,7 +22,6 @@ public class BrickBreakerComponent extends JComponent {
         this.paddle = paddle;
         this.bricks = bricks;
 
-        // Assign random colors to bricks
         for (Bricks brick : bricks) {
             brickColors.put(brick, new Color((int) (Math.random() * 0xFFFFFF)));
         }
@@ -50,7 +48,7 @@ public class BrickBreakerComponent extends JComponent {
         // Draw bricks
         for (Bricks brick : bricks) {
             if (!brick.isDestroyed()) {
-                g.setColor(brickColors.getOrDefault(brick, Color.GREEN)); // Default to red if no color
+                g.setColor(brickColors.getOrDefault(brick, Color.GREEN));
                 g2.fill(brick);
             }
         }

@@ -19,7 +19,7 @@ public class BrickBreakerFrame extends JFrame {
     private static final int SPACING = 10;
 
     private final Ball ball = new Ball(390, 530, 20, 20, 20, 5, 45);
-    private final Paddle paddle = new Paddle(350, 550, 100, 10, 20);
+    private final Paddle paddle = new Paddle(350, 550, 150, 10, 60);
     private final List<Bricks> bricks = new ArrayList<>();
     private final BrickBreakerComponent view = new BrickBreakerComponent(ball, paddle, bricks);
     private boolean ballMoving = false;
