@@ -50,9 +50,11 @@ public class Controller {
         } else if (ball.getY() <= 0) {
             ball.setDirectionDegrees(-ball.getDirectionDegrees());
         } else if (ball.getY() >= view.getHeight()) {
-            ball.setX(400);
-            ball.setY(500);
+            ball.setX(390);
+            ball.setY(510);
             ball.setDirectionDegrees(45);
+            paddle.setX(350);
+            paddle.setY(550);
             isGameRunning = false;
 
         }
