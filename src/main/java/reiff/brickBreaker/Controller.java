@@ -3,7 +3,6 @@ package reiff.brickBreaker;
 import levy.brickBreaker.Ball;
 import levy.brickBreaker.Bricks;
 import levy.brickBreaker.Paddle;
-import levy.brickBreaker.Wall;
 import lesser.brickBuilder.BrickBreakerComponent;
 import java.util.List;
 
@@ -55,6 +54,7 @@ public class Controller {
             ball.setY(500);
             ball.setDirectionDegrees(45);
             isGameRunning = false;
+
         }
     }
 
@@ -112,6 +112,4 @@ public class Controller {
             }
         }
     }
-
-
 }
