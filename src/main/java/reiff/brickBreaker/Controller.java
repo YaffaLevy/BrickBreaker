@@ -13,6 +13,8 @@ public class Controller {
     private final List<Bricks> bricks;
     private final BrickBreakerComponent view;
 
+    private boolean isGameRunning = false;
+
     public Controller(Ball ball, Paddle paddle, List<Bricks> bricks, BrickBreakerComponent view) {
         this.ball = ball;
         this.paddle = paddle;
@@ -22,6 +24,10 @@ public class Controller {
     }
 
     public void updateBallPosition() {
+        if (!isGameRunning) {
+            return;
+        }
+
         double radians = Math.toRadians(ball.getDirectionDegrees());
         double dx = Math.cos(radians) * ball.getSpeed();
         double dy = Math.sin(radians) * ball.getSpeed();
@@ -42,14 +48,23 @@ public class Controller {
     private void checkWallCollisions() {
         if (ball.getX() <= 0 || ball.getX() >= view.getWidth() - ball.getDiameter()) {
             ball.setDirectionDegrees(180 - ball.getDirectionDegrees());
-        }
-        else if (ball.getY() <= 0) {
+        } else if (ball.getY() <= 0) {
             ball.setDirectionDegrees(-ball.getDirectionDegrees());
+        } else if (ball.getY() >= view.getHeight()) {
+            ball.setX(400);
+            ball.setY(500);
+            ball.setDirectionDegrees(45);
+            isGameRunning = false;
         }
     }
 
+    public void startGame() {
+        isGameRunning = true;
+    }
 
-
+    public boolean isGameStopped() {
+        return !isGameRunning;
+    }
 
     private void checkPaddleCollision() {
         if (ball.getY() + ball.getDiameter() >= paddle.getY() &&
@@ -86,7 +101,7 @@ public class Controller {
 
     private void checkBrickCollisions() {
         for (Bricks brick : bricks) {
-            if (brick.isDestroyed() &&
+            if (!brick.isDestroyed() &&
                     ball.getX() + ball.getDiameter() >= brick.getX() &&
                     ball.getX() <= brick.getX() + brick.getWidth() &&
                     ball.getY() + ball.getDiameter() >= brick.getY() &&
@@ -97,4 +112,6 @@ public class Controller {
             }
         }
     }
+
+
 }
