@@ -12,8 +12,4 @@ public class Wall {
         this.width = width;
         this.height = height;
     }
-
-
-
-
 }

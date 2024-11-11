@@ -5,10 +5,6 @@ import levy.brickBreaker.Bricks;
 import levy.brickBreaker.Paddle;
 import levy.brickBreaker.Wall;
 import lesser.brickBuilder.BrickBreakerComponent;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class Controller {
@@ -17,22 +13,21 @@ public class Controller {
     private final List<Bricks> bricks;
     private final BrickBreakerComponent view;
 
+    private boolean isGameRunning = false;
+
     public Controller(Ball ball, Paddle paddle, List<Bricks> bricks, BrickBreakerComponent view) {
         this.ball = ball;
         this.paddle = paddle;
         this.bricks = bricks;
         this.view = view;
 
-        Timer timer = new Timer(16, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateBallPosition();
-            }
-        });
-        timer.start();
     }
-// check which timer to use
+
     public void updateBallPosition() {
+        if (!isGameRunning) {
+            return;
+        }
+
         double radians = Math.toRadians(ball.getDirectionDegrees());
         double dx = Math.cos(radians) * ball.getSpeed();
         double dy = Math.sin(radians) * ball.getSpeed();
@@ -53,23 +48,60 @@ public class Controller {
     private void checkWallCollisions() {
         if (ball.getX() <= 0 || ball.getX() >= view.getWidth() - ball.getDiameter()) {
             ball.setDirectionDegrees(180 - ball.getDirectionDegrees());
-        }
-        if (ball.getY() <= 0) {
+        } else if (ball.getY() <= 0) {
             ball.setDirectionDegrees(-ball.getDirectionDegrees());
+        } else if (ball.getY() >= view.getHeight()) {
+            ball.setX(400);
+            ball.setY(500);
+            ball.setDirectionDegrees(45);
+            isGameRunning = false;
         }
+    }
+
+    public void startGame() {
+        isGameRunning = true;
+    }
+
+    public boolean isGameStopped() {
+        return !isGameRunning;
     }
 
     private void checkPaddleCollision() {
         if (ball.getY() + ball.getDiameter() >= paddle.getY() &&
                 ball.getX() >= paddle.getX() &&
                 ball.getX() <= paddle.getX() + paddle.getWidth()) {
-            ball.setDirectionDegrees(-ball.getDirectionDegrees());
+
+            double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
+            double edgeZoneWidth = paddle.getWidth() * 0.1;
+
+            double leftEdgeEnd = paddle.getX() + edgeZoneWidth;
+            double rightEdgeStart = paddle.getX() + paddle.getWidth() - edgeZoneWidth;
+
+            double ballAngle = ball.getDirectionDegrees();
+
+            if (ball.getX() >= leftEdgeEnd &&
+                    ball.getX() <= paddleCenterX &&
+                    (ballAngle > 270 || ballAngle < 90)) {
+                ball.setDirectionDegrees((180 + ball.getDirectionDegrees()) % 360);
+            } else if (ball.getX() <= rightEdgeStart &&
+                    ball.getX() >= paddleCenterX &&
+                    (ballAngle > 90 && ballAngle < 270)) {
+                ball.setDirectionDegrees((180 + ball.getDirectionDegrees()) % 360);
+            } else if ((ball.getX() <= leftEdgeEnd && ballAngle > 270) ||
+                    (ball.getX() >= rightEdgeStart && ballAngle < 90)) {
+                ball.setDirectionDegrees(-ball.getDirectionDegrees());
+            } else if (ball.getX() >= paddleCenterX - 2 && ball.getX() <= paddleCenterX + 2) {
+                ball.setDirectionDegrees(270);
+            } else {
+                ball.setDirectionDegrees(-ball.getDirectionDegrees());
+            }
         }
     }
 
+
     private void checkBrickCollisions() {
         for (Bricks brick : bricks) {
-            if (brick.isDestroyed() &&
+            if (!brick.isDestroyed() &&
                     ball.getX() + ball.getDiameter() >= brick.getX() &&
                     ball.getX() <= brick.getX() + brick.getWidth() &&
                     ball.getY() + ball.getDiameter() >= brick.getY() &&
@@ -80,4 +112,6 @@ public class Controller {
             }
         }
     }
+
+
 }
