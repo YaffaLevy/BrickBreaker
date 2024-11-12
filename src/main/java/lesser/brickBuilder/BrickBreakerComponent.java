@@ -34,7 +34,7 @@ public class BrickBreakerComponent extends JComponent {
         Graphics2D g2 = (Graphics2D) g;
 
         // Set background
-        g.setColor(new Color(0,0,0));
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
 
         // Draw paddle
