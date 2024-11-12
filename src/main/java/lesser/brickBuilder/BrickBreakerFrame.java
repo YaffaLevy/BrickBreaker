@@ -55,6 +55,7 @@ public class BrickBreakerFrame extends JFrame {
 
                 if (keyCode == KeyEvent.VK_UP && !ballMoving) {
                     ballMoving = true;
+                    controller.startGame();
                 }
 
                 view.repaint();
@@ -64,6 +65,9 @@ public class BrickBreakerFrame extends JFrame {
         Timer gameTimer = new Timer(10, e -> {
             if (ballMoving) {
                 controller.updateBallPosition();
+            }
+            if (controller.isGameStopped()) {
+                ballMoving = false;
             }
             view.repaint();
         });

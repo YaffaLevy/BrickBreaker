@@ -3,7 +3,6 @@ package reiff.brickBreaker;
 import levy.brickBreaker.Ball;
 import levy.brickBreaker.Bricks;
 import levy.brickBreaker.Paddle;
-import levy.brickBreaker.Wall;
 import lesser.brickBuilder.BrickBreakerComponent;
 import java.util.List;
 
@@ -12,6 +11,8 @@ public class Controller {
     private final Paddle paddle;
     private final List<Bricks> bricks;
     private final BrickBreakerComponent view;
+
+    private boolean isGameRunning = false;
 
     public Controller(Ball ball, Paddle paddle, List<Bricks> bricks, BrickBreakerComponent view) {
         this.ball = ball;
@@ -22,6 +23,10 @@ public class Controller {
     }
 
     public void updateBallPosition() {
+        if (!isGameRunning) {
+            return;
+        }
+
         double radians = Math.toRadians(ball.getDirectionDegrees());
         double dx = Math.cos(radians) * ball.getSpeed();
         double dy = Math.sin(radians) * ball.getSpeed();
@@ -42,14 +47,26 @@ public class Controller {
     private void checkWallCollisions() {
         if (ball.getX() <= 0 || ball.getX() >= view.getWidth() - ball.getDiameter()) {
             ball.setDirectionDegrees(180 - ball.getDirectionDegrees());
-        }
-        else if (ball.getY() <= 0) {
+        } else if (ball.getY() <= 0) {
             ball.setDirectionDegrees(-ball.getDirectionDegrees());
+        } else if (ball.getY() >= view.getHeight()) {
+            ball.setX(390);
+            ball.setY(510);
+            ball.setDirectionDegrees(45);
+            paddle.setX(350);
+            paddle.setY(550);
+            isGameRunning = false;
+
         }
     }
 
+    public void startGame() {
+        isGameRunning = true;
+    }
 
-
+    public boolean isGameStopped() {
+        return !isGameRunning;
+    }
 
     private void checkPaddleCollision() {
         if (ball.getY() + ball.getDiameter() >= paddle.getY() &&
@@ -86,7 +103,7 @@ public class Controller {
 
     private void checkBrickCollisions() {
         for (Bricks brick : bricks) {
-            if (brick.isDestroyed() &&
+            if (!brick.isDestroyed() &&
                     ball.getX() + ball.getDiameter() >= brick.getX() &&
                     ball.getX() <= brick.getX() + brick.getWidth() &&
                     ball.getY() + ball.getDiameter() >= brick.getY() &&
