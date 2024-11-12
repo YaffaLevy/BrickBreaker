@@ -1,4 +1,4 @@
-package levy.brickBreaker;
+package levy.brickbreaker;
 
 public class Wall {
     private int x;
