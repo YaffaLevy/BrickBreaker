@@ -1,8 +1,8 @@
 package reiff.brickBreaker;
 
-import levy.brickBreaker.Ball;
-import levy.brickBreaker.Bricks;
-import levy.brickBreaker.Paddle;
+import levy.brickbreaker.Ball;
+import levy.brickbreaker.Bricks;
+import levy.brickbreaker.Paddle;
 import lesser.brickBuilder.BrickBreakerComponent;
 import java.util.List;
 

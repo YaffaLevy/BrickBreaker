@@ -1,8 +1,8 @@
 package lesser.brickBuilder;
 
-import levy.brickBreaker.Ball;
-import levy.brickBreaker.Paddle;
-import levy.brickBreaker.Bricks;
+import levy.brickbreaker.Ball;
+import levy.brickbreaker.Paddle;
+import levy.brickbreaker.Bricks;
 import reiff.brickBreaker.Controller;
 
 import javax.swing.*;

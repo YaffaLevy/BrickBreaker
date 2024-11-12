@@ -1,4 +1,4 @@
-package levy.brickBreaker;
+package levy.brickbreaker;
 
 import java.awt.geom.Ellipse2D;
 
