@@ -53,7 +53,6 @@ public class BrickBreakerFrame extends JFrame {
                 }
 
                 if (keyCode == KeyEvent.VK_UP && !ballMoving) {
-                    //resetPaddlePosition();
                     ballMoving = true;
                     controller.startGame();
                 }
