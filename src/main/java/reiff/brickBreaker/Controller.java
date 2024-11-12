@@ -3,7 +3,6 @@ package reiff.brickBreaker;
 import levy.brickBreaker.Ball;
 import levy.brickBreaker.Bricks;
 import levy.brickBreaker.Paddle;
-import levy.brickBreaker.Wall;
 import lesser.brickBuilder.BrickBreakerComponent;
 import java.util.List;
 
@@ -51,10 +50,13 @@ public class Controller {
         } else if (ball.getY() <= 0) {
             ball.setDirectionDegrees(-ball.getDirectionDegrees());
         } else if (ball.getY() >= view.getHeight()) {
-            ball.setX(400);
-            ball.setY(500);
+            ball.setX(390);
+            ball.setY(510);
             ball.setDirectionDegrees(45);
+            paddle.setX(350);
+            paddle.setY(550);
             isGameRunning = false;
+
         }
     }
 
@@ -112,6 +114,4 @@ public class Controller {
             }
         }
     }
-
-
 }
