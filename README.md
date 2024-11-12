@@ -15,3 +15,8 @@ Smooth Collision Detection: Handles bounces off walls, paddle, and bricks so the
 
 ### Technology 
 [KeyListener](https://www.geeksforgeeks.org/java-keylistener-in-awt/)
+
+### Contributors
+* Yaffa Levy [YaffaLevy](https://github.com/YaffaLevy)
+* Sheila Reiff [SheyReiff](https://github.com/SheyReiff)
+* Lauren Lesser [Lauren34](https://github.com/Lauren34)
