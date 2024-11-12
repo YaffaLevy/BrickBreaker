@@ -1,8 +1,6 @@
 package reiff.brickBreaker;
 
-import lesser.brickBuilder.BrickBreakerFrame;
-
-import javax.swing.*;
+import lesser.brickbuilder.BrickBreakerFrame;
 
 public class Main {
 

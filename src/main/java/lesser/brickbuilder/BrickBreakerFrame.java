@@ -1,4 +1,4 @@
-package lesser.brickBuilder;
+package lesser.brickbuilder;
 
 import levy.brickBreaker.Ball;
 import levy.brickBreaker.Paddle;
@@ -6,7 +6,8 @@ import levy.brickBreaker.Bricks;
 import reiff.brickBreaker.Controller;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -18,18 +19,25 @@ public class BrickBreakerFrame extends JFrame {
     private static final int BRICK_HEIGHT = 20;
     private static final int SPACING = 10;
 
-    private final Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
-    private final Paddle paddle = new Paddle(350, 550, 100, 10, 60);
-    private final List<Bricks> bricks = new ArrayList<>();
-    private final BrickBreakerComponent view = new BrickBreakerComponent(ball, paddle, bricks);
+    private final Paddle paddle;
+    private final List<Bricks> bricks;
+    private final BrickBreakerComponent view;
+    private final Controller controller;
+
     private boolean ballMoving = false;
-    private final Controller controller = new Controller(ball, paddle, bricks, view);
 
     public BrickBreakerFrame() {
         setSize(800, 600);
         setTitle("Brick Breaker");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
+        bricks = new ArrayList<>();
+        paddle = new Paddle(350, 550, 100, 10, 60);
+
+        Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
+        view = new BrickBreakerComponent(ball, paddle, bricks);
+        controller = new Controller(ball, paddle, bricks, view);
 
         add(view);
         view.setBounds(0, 0, 800, 600);
@@ -89,5 +97,4 @@ public class BrickBreakerFrame extends JFrame {
             }
         }
     }
-
 }
