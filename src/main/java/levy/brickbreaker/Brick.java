@@ -8,7 +8,6 @@ public class Brick extends Rectangle2D.Double {
     public Brick(double x, double y, double width, double height) {
 
         super(x, y, width, height);
-        this.destroyed = false;
     }
 
     public boolean isDestroyed() {
