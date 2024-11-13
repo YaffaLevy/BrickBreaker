@@ -1,7 +1,7 @@
 package reiff.brickBreaker;
 
 import levy.brickbreaker.Ball;
-import levy.brickbreaker.Bricks;
+import levy.brickbreaker.Brick;
 import levy.brickbreaker.Paddle;
 import lesser.brickBuilder.BrickBreakerComponent;
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.List;
 public class Controller {
     private final Ball ball;
     private final Paddle paddle;
-    private final List<Bricks> bricks;
+    private final List<Brick> bricks;
     private final BrickBreakerComponent view;
 
     private boolean isGameRunning = false;
 
-    public Controller(Ball ball, Paddle paddle, List<Bricks> bricks, BrickBreakerComponent view) {
+    public Controller(Ball ball, Paddle paddle, List<Brick> bricks, BrickBreakerComponent view) {
         this.ball = ball;
         this.paddle = paddle;
         this.bricks = bricks;
@@ -102,7 +102,7 @@ public class Controller {
 
 
     private void checkBrickCollisions() {
-        for (Bricks brick : bricks) {
+        for (Brick brick : bricks) {
             if (!brick.isDestroyed() &&
                     ball.getX() + ball.getDiameter() >= brick.getX() &&
                     ball.getX() <= brick.getX() + brick.getWidth() &&

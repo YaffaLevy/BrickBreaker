@@ -2,7 +2,7 @@ package lesser.brickBuilder;
 
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Paddle;
-import levy.brickbreaker.Bricks;
+import levy.brickbreaker.Brick;
 import reiff.brickBreaker.Controller;
 
 import javax.swing.*;
@@ -20,7 +20,7 @@ public class BrickBreakerFrame extends JFrame {
 
     private final Ball ball = new Ball(390, 530, 20, 20, 20, 5, 45);
     private final Paddle paddle = new Paddle(350, 550, 100, 10, 20);
-    private final List<Bricks> bricks = new ArrayList<>();
+    private final List<Brick> bricks = new ArrayList<>();
     private final BrickBreakerComponent view = new BrickBreakerComponent(ball, paddle, bricks);
     private boolean ballMoving = false;
     private final Controller controller = new Controller(ball, paddle, bricks, view);
@@ -85,7 +85,7 @@ public class BrickBreakerFrame extends JFrame {
                 if (random.nextBoolean()) {
                     int x = xOffset + col * (BRICK_WIDTH + SPACING);
                     int y = 50 + row * (BRICK_HEIGHT + SPACING);
-                    bricks.add(new Bricks(x, y, BRICK_WIDTH, BRICK_HEIGHT));
+                    bricks.add(new Brick(x, y, BRICK_WIDTH, BRICK_HEIGHT));
                 }
             }
         }

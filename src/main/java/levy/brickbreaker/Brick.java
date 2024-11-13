@@ -2,10 +2,10 @@ package levy.brickbreaker;
 
 import java.awt.geom.Rectangle2D;
 
-public class Bricks extends Rectangle2D.Double {
+public class Brick extends Rectangle2D.Double {
     private boolean destroyed;
 
-    public Bricks(double x, double y, double width, double height) {
+    public Brick(double x, double y, double width, double height) {
 
         super(x, y, width, height);
         this.destroyed = false;

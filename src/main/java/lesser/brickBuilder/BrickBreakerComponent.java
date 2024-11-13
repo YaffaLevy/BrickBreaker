@@ -2,7 +2,7 @@ package lesser.brickBuilder;
 
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Paddle;
-import levy.brickbreaker.Bricks;
+import levy.brickbreaker.Brick;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,18 +13,18 @@ import java.util.Map;
 public class BrickBreakerComponent extends JComponent {
     private final Ball ball;
     private final Paddle paddle;
-    private final List<Bricks> bricks;
+    private final List<Brick> bricks;
 
     // Map to store colors for each brick
-    private final Map<Bricks, Color> brickColors = new HashMap<>();
+    private final Map<Brick, Color> brickColors = new HashMap<>();
 
-    public BrickBreakerComponent(Ball ball, Paddle paddle, List<Bricks> bricks) {
+    public BrickBreakerComponent(Ball ball, Paddle paddle, List<Brick> bricks) {
         this.ball = ball;
         this.paddle = paddle;
         this.bricks = bricks;
 
         // Assign random colors to bricks
-        for (Bricks brick : bricks) {
+        for (Brick brick : bricks) {
             brickColors.put(brick, new Color((int) (Math.random() * 0xFFFFFF)));
         }
     }
@@ -48,7 +48,7 @@ public class BrickBreakerComponent extends JComponent {
         g2.fillOval((int) ball.getX(), (int) ball.getY(), (int) ball.getDiameter(), (int) ball.getDiameter());
 
         // Draw bricks
-        for (Bricks brick : bricks) {
+        for (Brick brick : bricks) {
             if (!brick.isDestroyed()) {
                 g.setColor(brickColors.getOrDefault(brick, Color.GREEN)); // Default to red if no color
                 g2.fill(brick);

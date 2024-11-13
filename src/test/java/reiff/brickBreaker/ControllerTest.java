@@ -1,7 +1,7 @@
 package reiff.brickBreaker;
 
 import levy.brickbreaker.Ball;
-import levy.brickbreaker.Bricks;
+import levy.brickbreaker.Brick;
 import levy.brickbreaker.Paddle;
 import lesser.brickBuilder.BrickBreakerComponent;
 import org.junit.jupiter.api.Test;
@@ -14,10 +14,10 @@ import static org.mockito.Mockito.*;
 class ControllerTest {
 
     @Test
-    void testBallMovesToNewPosition() {
+    void ballMovesToNewPosition() {
         Ball ball = mock();
         Paddle paddle = mock();
-        List<Bricks> bricks = new ArrayList<>();
+        List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = mock();
         Controller controller = new Controller(ball, paddle, bricks, view);
 
@@ -37,10 +37,10 @@ class ControllerTest {
     }
 
     @Test
-    void testBallChangesDirectionOnPaddleHit() {
+    void ballChangesDirectionOnPaddleHit() {
         Ball ball = mock();
         Paddle paddle = mock();
-        List<Bricks> bricks = new ArrayList<>();
+        List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = mock();
         Controller controller = new Controller(ball, paddle, bricks, view);
 
@@ -62,10 +62,10 @@ class ControllerTest {
     }
 
     @Test
-    void testBallBouncesOffWallCorrectly() {
+    void ballBouncesOffWallCorrectly() {
         Ball ball = mock();
         Paddle paddle = mock();
-        List<Bricks> bricks = new ArrayList<>();
+        List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = mock();
         Controller controller = new Controller(ball, paddle, bricks, view);
 
@@ -84,14 +84,14 @@ class ControllerTest {
     }
 
     @Test
-    void testBallDestroysBrickAndBounces() {
+    void ballDestroysBrickAndBounces() {
         Ball ball = mock();
         Paddle paddle = mock();
-        List<Bricks> bricks = new ArrayList<>();
+        List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = mock();
         Controller controller = new Controller(ball, paddle, bricks, view);
 
-        Bricks brick = mock(Bricks.class);
+        Brick brick = mock(Brick.class);
         bricks.add(brick);
 
         doReturn(800).when(view).getWidth();
