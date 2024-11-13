@@ -3,7 +3,7 @@ package reiff.brickBreaker;
 import levy.brickBreaker.Ball;
 import levy.brickBreaker.Bricks;
 import levy.brickBreaker.Paddle;
-import lesser.brickbuilder.BrickBreakerComponent;
+import lesser.brickbreaker.BrickBreakerComponent;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

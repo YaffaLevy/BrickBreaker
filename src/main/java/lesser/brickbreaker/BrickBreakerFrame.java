@@ -1,4 +1,4 @@
-package lesser.brickbuilder;
+package lesser.brickbreaker;
 
 import levy.brickBreaker.Ball;
 import levy.brickBreaker.Paddle;
