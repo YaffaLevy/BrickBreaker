@@ -10,6 +10,7 @@ public class Wall {
         this.width = width;
         this.height = height;
     }
+
     public int getWidth() {
         return width;
     }
