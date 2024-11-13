@@ -33,7 +33,7 @@ public class BrickBreakerFrame extends JFrame {
         setLocationRelativeTo(null);
 
         bricks = new ArrayList<>();
-        paddle = new Paddle(350, 550, 100, 10, 60);
+        paddle = new Paddle(350, 530, 100, 10, 60);
 
         Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
         view = new BrickBreakerComponent(ball, paddle, bricks);
