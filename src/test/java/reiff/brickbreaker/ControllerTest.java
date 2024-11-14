@@ -1,9 +1,9 @@
-package reiff.brickBreaker;
+package reiff.brickbreaker;
 
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Brick;
 import levy.brickbreaker.Paddle;
-import lesser.brickBuilder.BrickBreakerComponent;
+import lesser.brickbreaker.BrickBreakerComponent;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,12 +15,13 @@ class ControllerTest {
 
     @Test
     void ballMovesToNewPosition() {
+        // Given
         Ball ball = mock();
         Paddle paddle = mock();
         List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = mock();
         Controller controller = new Controller(ball, paddle, bricks, view);
-
+        //When
         doReturn(800).when(view).getWidth();
         doReturn(600).when(view).getHeight();
         doReturn(100.0).when(ball).getX();
@@ -30,7 +31,7 @@ class ControllerTest {
 
         controller.startGame();
         controller.updateBallPosition();
-
+        // then
         verify(ball).setX(anyDouble());
         verify(ball).setY(anyDouble());
         verify(view).repaint();
@@ -38,12 +39,13 @@ class ControllerTest {
 
     @Test
     void ballChangesDirectionOnPaddleHit() {
+        //Given
         Ball ball = mock();
         Paddle paddle = mock();
         List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = mock();
         Controller controller = new Controller(ball, paddle, bricks, view);
-
+        //when
         doReturn(800).when(view).getWidth();
         doReturn(600).when(view).getHeight();
         doReturn(120.0).when(ball).getX();
@@ -56,19 +58,20 @@ class ControllerTest {
 
         controller.startGame();
         controller.updateBallPosition();
-
+        //then
         verify(ball).setDirectionDegrees(anyDouble());
         verify(view).repaint();
     }
 
     @Test
     void ballBouncesOffWallCorrectly() {
+        //Given
         Ball ball = mock();
         Paddle paddle = mock();
         List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = mock();
         Controller controller = new Controller(ball, paddle, bricks, view);
-
+        //When
         doReturn(800).when(view).getWidth();
         doReturn(600).when(view).getHeight();
         doReturn(790.0).when(ball).getX();
@@ -78,13 +81,14 @@ class ControllerTest {
 
         controller.startGame();
         controller.updateBallPosition();
-
+        //then
         verify(ball).setDirectionDegrees(anyDouble());
         verify(view).repaint();
     }
 
     @Test
     void ballDestroysBrickAndBounces() {
+        //Given
         Ball ball = mock();
         Paddle paddle = mock();
         List<Brick> bricks = new ArrayList<>();
@@ -93,7 +97,7 @@ class ControllerTest {
 
         Brick brick = mock(Brick.class);
         bricks.add(brick);
-
+        //when
         doReturn(800).when(view).getWidth();
         doReturn(600).when(view).getHeight();
         doReturn(100.0).when(brick).getX();
@@ -108,7 +112,7 @@ class ControllerTest {
 
         controller.startGame();
         controller.updateBallPosition();
-
+        //then
         verify(brick).setDestroyed(true);
         verify(ball).setDirectionDegrees(anyDouble());
         verify(view).repaint();

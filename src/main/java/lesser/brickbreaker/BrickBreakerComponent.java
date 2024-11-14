@@ -1,4 +1,4 @@
-package lesser.brickBuilder;
+package lesser.brickbreaker;
 
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Paddle;
@@ -15,16 +15,17 @@ public class BrickBreakerComponent extends JComponent {
     private final Paddle paddle;
     private final List<Brick> bricks;
 
-    // Map to store colors for each brick
     private final Map<Brick, Color> brickColors = new HashMap<>();
+
 
     public BrickBreakerComponent(Ball ball, Paddle paddle, List<Brick> bricks) {
         this.ball = ball;
         this.paddle = paddle;
         this.bricks = bricks;
 
-        // Assign random colors to bricks
+
         for (Brick brick : bricks) {
+
             brickColors.put(brick, new Color((int) (Math.random() * 0xFFFFFF)));
         }
     }
@@ -36,7 +37,7 @@ public class BrickBreakerComponent extends JComponent {
         Graphics2D g2 = (Graphics2D) g;
 
         // Set background
-        g.setColor(new Color(0,0,0));
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
 
         // Draw paddle
@@ -50,7 +51,7 @@ public class BrickBreakerComponent extends JComponent {
         // Draw bricks
         for (Brick brick : bricks) {
             if (!brick.isDestroyed()) {
-                g.setColor(brickColors.getOrDefault(brick, Color.GREEN)); // Default to red if no color
+                g.setColor(brickColors.getOrDefault(brick, Color.GREEN));
                 g2.fill(brick);
             }
         }
