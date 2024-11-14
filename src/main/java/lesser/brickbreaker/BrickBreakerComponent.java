@@ -6,16 +6,14 @@ import levy.brickbreaker.Brick;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 public class BrickBreakerComponent extends JComponent {
     private final Ball ball;
     private final Paddle paddle;
     private final List<Brick> bricks;
-
-    private final Map<Brick, Color> brickColors = new HashMap<>();
+    private final Random random = new Random();
 
 
     public BrickBreakerComponent(Ball ball, Paddle paddle, List<Brick> bricks) {
@@ -25,8 +23,7 @@ public class BrickBreakerComponent extends JComponent {
 
 
         for (Brick brick : bricks) {
-
-            brickColors.put(brick, new Color((int) (Math.random() * 0xFFFFFF)));
+            brick.setColor(new Color(random.nextInt(0xFFFFFF)));
         }
     }
 
@@ -51,7 +48,7 @@ public class BrickBreakerComponent extends JComponent {
         // Draw bricks
         for (Brick brick : bricks) {
             if (!brick.isDestroyed()) {
-                g.setColor(brickColors.getOrDefault(brick, Color.GREEN));
+                g.setColor(brick.getColor());
                 g2.fill(brick);
             }
         }
