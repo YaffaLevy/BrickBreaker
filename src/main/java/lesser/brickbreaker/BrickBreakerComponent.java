@@ -13,18 +13,11 @@ public class BrickBreakerComponent extends JComponent {
     private final Ball ball;
     private final Paddle paddle;
     private final List<Brick> bricks;
-    private final Random random = new Random();
-
-
     public BrickBreakerComponent(Ball ball, Paddle paddle, List<Brick> bricks) {
         this.ball = ball;
         this.paddle = paddle;
         this.bricks = bricks;
 
-
-        for (Brick brick : bricks) {
-            brick.setColor(new Color(random.nextInt(0xFFFFFF)));
-        }
     }
 
     @Override
