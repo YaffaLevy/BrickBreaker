@@ -7,7 +7,8 @@ public class Ball extends Ellipse2D.Double {
     private double directionDegrees;
     private double speed;
 
-    public Ball(double x, double y, double height, double width, double diameter, double speed, double directionDegree) {
+    public Ball(double x, double y, double height, double width,
+                double diameter, double speed, double directionDegree) {
 
         super(x, y, width, height);
         this.diameter = diameter;
