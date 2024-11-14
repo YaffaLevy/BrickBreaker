@@ -79,12 +79,12 @@ public class BrickBreakerFrame extends JFrame {
 
     private void initializeBricks() {
         Random random = new Random();
-        int xOffset = (getWidth() - (COLS * (BRICK_WIDTH + SPACING) - SPACING)) / 2;
+        int xoffset = (getWidth() - (COLS * (BRICK_WIDTH + SPACING) - SPACING)) / 2;
 
         for (int row = 0; row < ROWS; row++) {
             for (int col = 0; col < COLS; col++) {
                 if (random.nextBoolean()) {
-                    int x = xOffset + col * (BRICK_WIDTH + SPACING);
+                    int x = xoffset + col * (BRICK_WIDTH + SPACING);
                     int y = 50 + row * (BRICK_HEIGHT + SPACING);
                     bricks.add(new Brick(x, y, BRICK_WIDTH, BRICK_HEIGHT));
                 }
