@@ -16,6 +16,8 @@ public class Controller {
     private final BrickBreakerComponent view;
     private boolean isGameRunning = false;
 
+    public int won = 0;
+
     public Controller(Ball ball, Paddle paddle, List<Brick> bricks, BrickBreakerComponent view) {
         this.ball = ball;
         this.paddle = paddle;
@@ -73,6 +75,9 @@ public class Controller {
     public boolean isGameStopped() {
         return !isGameRunning;
     }
+    public boolean won() {
+        return won == 1;
+    }
 
     private void checkPaddleCollision() {
         if (ball.getY() + ball.getDiameter() >= paddle.getY()
@@ -117,11 +122,17 @@ public class Controller {
                     && ball.getY() <= brick.getY() + brick.getHeight()) {
 
                 brick.setDestroyed(true);
+                bricks.remove(brick);
                 ball.setDirectionDegrees(-ball.getDirectionDegrees());
                 break;
             }
         }
-    }
 
+        if (bricks.isEmpty()) {
+            isGameRunning = false;
+            won = 1;
+            resetGame();
+        }
+    }
 
 }
