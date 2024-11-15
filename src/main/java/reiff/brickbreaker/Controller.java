@@ -1,9 +1,12 @@
 package reiff.brickbreaker;
 
+import lesser.brickbreaker.BrickBreakerFrame;
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Brick;
 import levy.brickbreaker.Paddle;
 import lesser.brickbreaker.BrickBreakerComponent;
+
+import javax.swing.*;
 import java.util.List;
 
 public class Controller {
@@ -11,8 +14,9 @@ public class Controller {
     private final Paddle paddle;
     private final List<Brick> bricks;
     private final BrickBreakerComponent view;
-
     private boolean isGameRunning = false;
+
+    public int won = 0;
 
     public Controller(Ball ball, Paddle paddle, List<Brick> bricks, BrickBreakerComponent view) {
         this.ball = ball;
@@ -50,14 +54,18 @@ public class Controller {
         } else if (ball.getY() <= 0) {
             ball.setDirectionDegrees(-ball.getDirectionDegrees());
         } else if (ball.getY() >= view.getHeight()) {
-            ball.setX(390);
-            ball.setY(510);
-            ball.setDirectionDegrees(45);
-            paddle.setX(350);
-            paddle.setY(550);
-            isGameRunning = false;
-
+            resetGame();
         }
+    }
+
+    private void resetGame() {
+        ball.setX(390);
+        ball.setY(510);
+        ball.setDirectionDegrees(45);
+        paddle.setX(350);
+        paddle.setY(550);
+        isGameRunning = false;
+        ((BrickBreakerFrame) SwingUtilities.getWindowAncestor(view)).resetBricks();
     }
 
     public void startGame() {
@@ -66,6 +74,9 @@ public class Controller {
 
     public boolean isGameStopped() {
         return !isGameRunning;
+    }
+    public boolean won() {
+        return won == 1;
     }
 
     private void checkPaddleCollision() {
@@ -111,9 +122,17 @@ public class Controller {
                     && ball.getY() <= brick.getY() + brick.getHeight()) {
 
                 brick.setDestroyed(true);
+                bricks.remove(brick);
                 ball.setDirectionDegrees(-ball.getDirectionDegrees());
                 break;
             }
         }
+
+        if (bricks.isEmpty()) {
+            isGameRunning = false;
+            won = 1;
+            resetGame();
+        }
     }
+
 }
