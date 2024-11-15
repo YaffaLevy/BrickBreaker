@@ -69,6 +69,7 @@ public class BrickBreakerFrame extends JFrame {
             }
             if (controller.isGameStopped()) {
                 ballMoving = false;
+
             }
             view.repaint();
         });
@@ -76,6 +77,13 @@ public class BrickBreakerFrame extends JFrame {
 
         setVisible(true);
     }
+
+    public void resetBricks() {
+        bricks.clear();
+        initializeBricks();
+        view.repaint();
+    }
+
 
     private void initializeBricks() {
         Random random = new Random();
