@@ -2,6 +2,7 @@
 package reiff.brickbreaker;
 
 import basicneuralnetwork.NeuralNetwork;
+import lesser.brickbreaker.BrickBreakerComponent;
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Paddle;
 
@@ -14,12 +15,13 @@ public class ManyNetworks {
     private final Ball ball;
     private final Paddle paddle;
     private final Controller controller;
-    private Random random;
+    private final BrickBreakerComponent view;
 
-    public ManyNetworks(Ball ball, Paddle paddle, Controller controller) {
+    public ManyNetworks(Ball ball, Paddle paddle, Controller controller, BrickBreakerComponent view) {
         this.ball = ball;
         this.paddle = paddle;
         this.controller = controller;
+        this.view = view;
     }
 
     //Here we are creating 1000 networks and storing them in an array.
@@ -83,25 +85,29 @@ public class ManyNetworks {
                 controller.updateBallPosition();
 
                 double[] input = new double[1];
-                input[0] = calculateAngle(ball.getX(), ball.getY(), paddle.getX(), paddle.getWidth());
+                input[0] = calculateAngle();
                 double[] answer = neuralNetwork.guess(input);
 
                 // answer[0] corresponds to probability of going left and answer[1] of going right
                 double movementSpeed = Math.abs(answer[0] - answer[1]);
                 if (answer[0] > answer[1]) {
-                    movePaddleLeft(movementSpeed); //Ilana implement
+                    movePaddleLeft(movementSpeed);
                 } else {
-                    movePaddleRight(movementSpeed); //Ilana implement
+                    movePaddleRight(movementSpeed);
                 }
 
             }
 
             long endTime = System.currentTimeMillis();
             double timeSurvived = (endTime - startTime) / 1000.0;
+            performanceMap.put(neuralNetwork, timeSurvived);
 
+            /*
             if (controller.won()) {
                 performanceMap.put(neuralNetwork, timeSurvived);
             }
+
+             */
         }
         return performanceMap;
     }
@@ -126,12 +132,22 @@ public class ManyNetworks {
         return top10;
     }
 
-        private double calculateAngle(double x, double y, double x1, double width) {
+        private double calculateAngle() {
             double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
             double deltaX = ball.getX() - paddleCenterX;
             double deltaY = ball.getY() - paddle.getY();
             return Math.toDegrees(Math.atan2(deltaY, deltaX));
         }
+
+    private void movePaddleLeft(double movementSpeed) {
+        double newX = paddle.getX() - movementSpeed * paddle.getSpeed();
+        paddle.setX(Math.max(newX, 0));
+    }
+
+    private void movePaddleRight(double movementSpeed) {
+        double newX = paddle.getX() + movementSpeed * paddle.getSpeed();
+        paddle.setX(Math.min(newX, view.getWidth() - paddle.getWidth()));
+    }
 }
 
 
