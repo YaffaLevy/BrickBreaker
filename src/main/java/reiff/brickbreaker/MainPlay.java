@@ -49,8 +49,6 @@ public class MainPlay {
         // Step 4: Output the final generation of networks
         System.out.println("Final generation of networks created.");
 
-        // Optional: Perform further analysis on the final generation of networks
-        // For example, print the performance of the final top 10
         NeuralNetwork[] finalTop10 = topPerformingNetworks;
         System.out.println("Top 10 Networks from Final Generation:");
         for (int i = 0; i < finalTop10.length; i++) {
