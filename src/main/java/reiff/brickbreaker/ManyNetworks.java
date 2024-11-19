@@ -64,7 +64,7 @@ public class ManyNetworks {
         return nextGeneration;
     }
 
-//We need to figure out now, where are we letting these new networks play and so on...
+    //We need to figure out now, where are we letting these new networks play and so on...
 
     //Here we are going to let each network play
     public Map<NeuralNetwork, Double> networksPlay(NeuralNetwork[] neuralNetworksArray) {
@@ -126,7 +126,7 @@ public class ManyNetworks {
         return top10;
     }
 
-        private double calculateAngle ( double x, double y, double x1, double width){
+        private double calculateAngle(double x, double y, double x1, double width) {
             double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
             double deltaX = ball.getX() - paddleCenterX;
             double deltaY = ball.getY() - paddle.getY();

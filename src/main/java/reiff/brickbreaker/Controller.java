@@ -75,6 +75,7 @@ public class Controller {
     public boolean isGameStopped() {
         return !isGameRunning;
     }
+
     public boolean won() {
         return won == 1;
     }
