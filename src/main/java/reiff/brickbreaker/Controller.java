@@ -6,9 +6,9 @@ import levy.brickbreaker.Brick;
 import levy.brickbreaker.Paddle;
 import lesser.brickbreaker.BrickBreakerComponent;
 
-import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
+import java.util.Random;
 
 public class Controller {
     private final Ball ball;
@@ -16,6 +16,11 @@ public class Controller {
     private final List<Brick> bricks;
     private final BrickBreakerComponent view;
     private boolean isGameRunning = false;
+    private static final int COLS = 10;
+    private static final int ROWS = 5;
+    private static final int BRICK_WIDTH = 60;
+    private static final int BRICK_HEIGHT = 20;
+    private static final int SPACING = 10;
 
     public int won = 0;
 
@@ -84,7 +89,8 @@ public class Controller {
         paddle.setX(350);
         paddle.setY(550);
         isGameRunning = false;
-        ((BrickBreakerFrame) SwingUtilities.getWindowAncestor(view)).resetBricks();
+        //((BrickBreakerFrame) SwingUtilities.getWindowAncestor(view)).resetBricks();
+        resetBricks();
     }
 
     public void startGame() {
@@ -98,6 +104,29 @@ public class Controller {
     public boolean won() {
         return won == 1;
     }
+
+    public void resetBricks() {
+        bricks.clear();
+        initializeBricks();
+        view.repaint();
+    }
+
+
+    public void initializeBricks() {
+        Random random = new Random();
+        int xoffset = (view.getWidth() - (COLS * (BRICK_WIDTH + SPACING) - SPACING)) / 2;
+
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (random.nextBoolean()) {
+                    int x = xoffset + col * (BRICK_WIDTH + SPACING);
+                    int y = 50 + row * (BRICK_HEIGHT + SPACING);
+                    bricks.add(new Brick(x, y, BRICK_WIDTH, BRICK_HEIGHT));
+                }
+            }
+        }
+    }
+
 
     private void checkPaddleCollision() {
         if (ball.getY() + ball.getDiameter() >= paddle.getY()

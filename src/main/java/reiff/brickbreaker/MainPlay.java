@@ -20,12 +20,13 @@ import java.util.List;
 public class MainPlay {
     public static void main(String[] args) {
 
+
         // Initialize the necessary components
         Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
 
         Paddle paddle = new Paddle(350, 550, 100, 10, 60);
 
-        List<Brick> bricks = new ArrayList<>();
+        List<Brick> bricks = initializeBricks(10, 5, 60, 20, 10, 800);
 
         BrickBreakerComponent view = new BrickBreakerComponent(ball, paddle, bricks );
 
@@ -68,4 +69,20 @@ public class MainPlay {
             System.out.println("Network " + (i + 1) + ": " + finalTop10[i]);
         }
     }
+
+    private static List<Brick> initializeBricks(int cols, int rows, int brickWidth, int brickHeight, int spacing, int frameWidth) {
+        List<Brick> bricks = new ArrayList<>();
+        int xoffset = (frameWidth - (cols * (brickWidth + spacing) - spacing)) / 2;
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                int x = xoffset + col * (brickWidth + spacing);
+                int y = 50 + row * (brickHeight + spacing);
+                bricks.add(new Brick(x, y, brickWidth, brickHeight));
+            }
+        }
+
+        return bricks;
+    }
+
 }

@@ -12,11 +12,14 @@ import java.util.List;
 import java.util.Random;
 
 public class BrickBreakerFrame extends JFrame {
+    /*
     private static final int COLS = 10;
     private static final int ROWS = 5;
     private static final int BRICK_WIDTH = 60;
     private static final int BRICK_HEIGHT = 20;
     private static final int SPACING = 10;
+
+     */
 
     private final Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
 
@@ -24,7 +27,7 @@ public class BrickBreakerFrame extends JFrame {
     private final List<Brick> bricks = new ArrayList<>();
 
     private final BrickBreakerComponent view = new BrickBreakerComponent(ball, paddle, bricks);
-    private boolean ballMoving = false;
+   // private boolean ballMoving = false;
     private final Controller controller = new Controller(ball, paddle, bricks, view);
 
     public BrickBreakerFrame() {
@@ -35,6 +38,7 @@ public class BrickBreakerFrame extends JFrame {
 
         add(view);
         view.setBounds(0, 0, 800, 600);
+        setVisible(true);
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -45,7 +49,7 @@ public class BrickBreakerFrame extends JFrame {
         setFocusable(true);
         requestFocusInWindow();
 
-        initializeBricks();
+        controller.initializeBricks();
 
         Timer gameTimer = new Timer(10, e -> {
             if (!controller.isGameStopped()) {
@@ -56,15 +60,14 @@ public class BrickBreakerFrame extends JFrame {
         });
         gameTimer.start();
 
-        setVisible(true);
     }
 
+    /*
     public void resetBricks() {
         bricks.clear();
         initializeBricks();
         view.repaint();
     }
-
 
     private void initializeBricks() {
         Random random = new Random();
@@ -81,4 +84,5 @@ public class BrickBreakerFrame extends JFrame {
         }
     }
 
+     */
 }

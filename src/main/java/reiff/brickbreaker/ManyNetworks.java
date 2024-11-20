@@ -30,8 +30,8 @@ public class ManyNetworks {
 
         NeuralNetwork[] neuralNetworksArray = new NeuralNetwork[1000];
 
-        for (int i = 0; i < 1000; i++) {
-            neuralNetworksArray[i] = new NeuralNetwork(2, 2, 4, 2);
+        for (int i = 0; i < neuralNetworksArray.length; i++) {
+            neuralNetworksArray[i] = new NeuralNetwork(1, 2, 4, 2);
         }
 
         return neuralNetworksArray;
