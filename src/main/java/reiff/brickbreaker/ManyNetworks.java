@@ -77,7 +77,7 @@ public class ManyNetworks {
 
         for (NeuralNetwork neuralNetwork : neuralNetworksArray) {
 
-            //controller.resetGame();
+            controller.resetGame();
             controller.startGame();
 
             long startTime = System.currentTimeMillis();
