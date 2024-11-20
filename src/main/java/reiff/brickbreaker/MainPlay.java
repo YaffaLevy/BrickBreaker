@@ -35,7 +35,7 @@ public class MainPlay {
         // Create ManyNetworks instance to handle neural network operations
         ManyNetworks manyNetworks = new ManyNetworks(ball, paddle, controller, view);
 
-        // Step 1: Generate the first generation of networks
+        // Step 1:Generate the first generation of networks
         NeuralNetwork[] currentGeneration = manyNetworks.generateNetworks();
 
         manyNetworks.networksPlay(currentGeneration);
