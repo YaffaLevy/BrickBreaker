@@ -35,42 +35,23 @@ public class BrickBreakerFrame extends JFrame {
 
         add(view);
         view.setBounds(0, 0, 800, 600);
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                controller.handleKeyEvent(e.getKeyCode());
+            }
+        });
 
         setFocusable(true);
         requestFocusInWindow();
 
         initializeBricks();
 
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                int keyCode = e.getKeyCode();
-                int paddleSpeed = paddle.getSpeed();
-
-                // Move paddle left or right
-                if (keyCode == KeyEvent.VK_LEFT) {
-                    paddle.x = Math.max(0, paddle.x - paddleSpeed);
-                } else if (keyCode == KeyEvent.VK_RIGHT) {
-                    paddle.x = Math.min(view.getWidth() - paddle.width, paddle.x + paddleSpeed);
-                }
-
-                if (keyCode == KeyEvent.VK_UP && !ballMoving) {
-                    ballMoving = true;
-                    controller.startGame();
-                }
-
-                view.repaint();
-            }
-        });
-
         Timer gameTimer = new Timer(10, e -> {
-            if (ballMoving) {
+            if (!controller.isGameStopped()) {
                 controller.updateBallPosition();
             }
-            if (controller.isGameStopped()) {
-                ballMoving = false;
 
-            }
             view.repaint();
         });
         gameTimer.start();

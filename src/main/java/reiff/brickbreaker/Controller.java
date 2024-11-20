@@ -7,6 +7,7 @@ import levy.brickbreaker.Paddle;
 import lesser.brickbreaker.BrickBreakerComponent;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class Controller {
@@ -24,6 +25,24 @@ public class Controller {
         this.bricks = bricks;
         this.view = view;
 
+    }
+
+    public void handleKeyEvent(int keyCode) {
+        int paddleSpeed = paddle.getSpeed();
+
+        // Move paddle left or right
+        if (keyCode == KeyEvent.VK_LEFT) {
+            paddle.x = Math.max(0, paddle.x - paddleSpeed);
+        } else if (keyCode == KeyEvent.VK_RIGHT) {
+            paddle.x = Math.min(view.getWidth() - paddle.width, paddle.x + paddleSpeed);
+        }
+
+        // Start the game when the UP arrow key is pressed and the game isn't already running
+        if (keyCode == KeyEvent.VK_UP && !isGameRunning) {
+            startGame();
+        }
+
+        view.repaint();
     }
 
     public void updateBallPosition() {

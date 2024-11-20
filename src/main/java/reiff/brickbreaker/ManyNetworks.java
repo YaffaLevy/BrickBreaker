@@ -6,6 +6,7 @@ import lesser.brickbreaker.BrickBreakerComponent;
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Paddle;
 
+import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,7 +77,7 @@ public class ManyNetworks {
 
         for (NeuralNetwork neuralNetwork : neuralNetworksArray) {
 
-            controller.resetGame();
+            //controller.resetGame();
             controller.startGame();
 
             long startTime = System.currentTimeMillis();
@@ -141,13 +142,15 @@ public class ManyNetworks {
         }
 
     private void movePaddleLeft(double movementSpeed) {
-        double newX = paddle.getX() - movementSpeed * paddle.getSpeed();
-        paddle.setX(Math.max(newX, 0));
+        for (int i = 0; i < movementSpeed; i++) {
+            controller.handleKeyEvent(KeyEvent.VK_LEFT);
+        }
     }
 
     private void movePaddleRight(double movementSpeed) {
-        double newX = paddle.getX() + movementSpeed * paddle.getSpeed();
-        paddle.setX(Math.min(newX, view.getWidth() - paddle.getWidth()));
+        for (int i = 0; i < movementSpeed; i++) {
+            controller.handleKeyEvent(KeyEvent.VK_RIGHT);
+        }
     }
 }
 
