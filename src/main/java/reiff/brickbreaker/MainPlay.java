@@ -32,8 +32,6 @@ public class MainPlay {
 
         Controller controller = new Controller(ball, paddle, bricks, view);
 
-        //
-
         // Create ManyNetworks instance to handle neural network operations
         ManyNetworks manyNetworks = new ManyNetworks(ball, paddle, controller, view);
 
