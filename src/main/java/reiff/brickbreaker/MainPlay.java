@@ -10,6 +10,13 @@ import basicneuralnetwork.NeuralNetwork;
 import java.util.ArrayList;
 import java.util.List;
 
+//1. We need to do many things: first make sure that our things are initlized correctly --> bricks
+//2. Once we have that we can run the code probably, if not we'll have to debug, maybe we should do tests for out methods
+//In many networks
+// 3. once we have this runnign correctly we can track the progress and understand if its actually progressing or not
+//4. If the time is getting longer and longer it means that it lasts for longer, thus it did not loose.
+//5. After all of this and we see that in fact everything is working nicely, We'll try and see if we can have them play with
+// the gui
 public class MainPlay {
     public static void main(String[] args) {
 
@@ -24,7 +31,7 @@ public class MainPlay {
 
         Controller controller = new Controller(ball, paddle, bricks, view);
 
-        //BrickBreakerFrame.initializeBricks();
+        //
 
         // Create ManyNetworks instance to handle neural network operations
         ManyNetworks manyNetworks = new ManyNetworks(ball, paddle, controller, view);
@@ -32,15 +39,21 @@ public class MainPlay {
         // Step 1: Generate the first generation of networks
         NeuralNetwork[] currentGeneration = manyNetworks.generateNetworks();
 
+        manyNetworks.networksPlay(currentGeneration);
+
         // Step 2: Let the first generation play and get the top 10
         NeuralNetwork[] topPerformingNetworks = manyNetworks.getTop10Networks(currentGeneration);
 
-        // Step 3: Evolve networks over 10 generations
-        for (int generation = 0; generation < 10; generation++) {
+        // Step 3: Evolve networks over 50 generations
+        for (int generation = 0; generation < 50; generation++) {
             System.out.println("Generation: " + (generation + 1));
 
             // Create the next generation based on the top-performing networks
             currentGeneration = manyNetworks.createNextGeneration(topPerformingNetworks);
+
+            for (int i = 0; i < currentGeneration.length; i++) {
+                System.out.println("This us generation: " + (generation +1) + " Network " + (i + 1) + ": " + currentGeneration[i]);
+            }
 
             // Let the new generation play and determine the top 10 networks
             topPerformingNetworks = manyNetworks.getTop10Networks(currentGeneration);

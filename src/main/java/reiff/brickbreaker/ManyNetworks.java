@@ -72,15 +72,19 @@ public class ManyNetworks {
     public Map<NeuralNetwork, Double> networksPlay(NeuralNetwork[] neuralNetworksArray) {
 
         Map<NeuralNetwork, Double> performanceMap = new HashMap<>();
+        long maxDurationMillis = 120 * 1000; // 120 seconds max duration
 
         for (NeuralNetwork neuralNetwork : neuralNetworksArray) {
 
+            controller.resetGame();
             controller.startGame();
 
-            long startTime = 0;
+            long startTime = System.currentTimeMillis();
             while (!controller.isGameStopped()) {
-
-                startTime = System.nanoTime();
+                if (System.currentTimeMillis() - startTime > maxDurationMillis) {
+                    System.out.println("Time-out reached, stopping the game.");
+                    break;
+                }
 
                 controller.updateBallPosition();
 
@@ -95,22 +99,19 @@ public class ManyNetworks {
                 } else {
                     movePaddleRight(movementSpeed);
                 }
-
             }
 
-            long endTime = System.currentTimeMillis();
-            double timeSurvived = (endTime - startTime) / 1000.0;
-            performanceMap.put(neuralNetwork, timeSurvived);
-
-            /*
-            if (controller.won()) {
+            double timeSurvived = (System.currentTimeMillis() - startTime) / 1000.0;
+            if (controller.isGameStopped()) {
                 performanceMap.put(neuralNetwork, timeSurvived);
+            } else {
+                performanceMap.put(neuralNetwork, maxDurationMillis / 1000.0);
             }
-
-             */
         }
+
         return performanceMap;
     }
+
 
     public List<Map.Entry<NeuralNetwork, Double>> getTopPerformingNetworks(Map<NeuralNetwork, Double> performanceMap) {
         return performanceMap.entrySet()

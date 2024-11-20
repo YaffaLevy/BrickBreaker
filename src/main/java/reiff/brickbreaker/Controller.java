@@ -58,7 +58,7 @@ public class Controller {
         }
     }
 
-    private void resetGame() {
+    public void resetGame() {
         ball.setX(390);
         ball.setY(510);
         ball.setDirectionDegrees(45);
