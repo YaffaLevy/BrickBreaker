@@ -93,12 +93,19 @@ public class ManyNetworks {
                 input[0] = calculateAngle();
                 double[] answer = neuralNetwork.guess(input);
 
-                // answer[0] corresponds to probability of going left and answer[1] of going right
-                double movementSpeed = Math.abs(answer[0] - answer[1]);
-                if (answer[0] > answer[1]) {
-                    movePaddleLeft(movementSpeed);
+                double leftConfidence = answer[0];
+                double rightConfidence = answer[1];
+
+
+                int maxPresses = 12;
+                int numPressesLeft = (int) (leftConfidence * maxPresses);
+                int numPressesRight = (int) (rightConfidence * maxPresses);
+
+                // Simulate key presses based on the neural network's confidence in the choice
+                if (leftConfidence > rightConfidence) {
+                    movePaddleLeft(numPressesLeft);
                 } else {
-                    movePaddleRight(movementSpeed);
+                    movePaddleRight(numPressesRight);
                 }
             }
 
