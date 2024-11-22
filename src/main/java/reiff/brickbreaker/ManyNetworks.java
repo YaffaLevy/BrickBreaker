@@ -41,7 +41,6 @@ public class ManyNetworks {
     public List<NeuralNetwork> createNextGeneration(List<NeuralNetwork> topPerformingNetworks) {
 
         List<NeuralNetwork> nextGeneration = new ArrayList<>(1000);
-        int index = 0;
 
         for (int i = 0; i < topPerformingNetworks.size(); i++) {
 
@@ -53,8 +52,7 @@ public class ManyNetworks {
                     NeuralNetwork child = parent1.merge(parent2);
                     child.mutate(0.1);
 
-                    nextGeneration.add(index, child);
-                    index++;
+                    nextGeneration.add(child);
 
                 }
             }
