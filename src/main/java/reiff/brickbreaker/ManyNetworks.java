@@ -28,7 +28,7 @@ public class ManyNetworks {
     //Here we are creating 1000 networks and storing them in an array.
     public List<NeuralNetwork> generateNetworks() {
 
-        List<NeuralNetwork> neuralNetworkList = new ArrayList<>(1000);
+        List<NeuralNetwork> neuralNetworkList = new ArrayList<>();
 
         for (int i = 0; i < 1000; i++) {
             neuralNetworkList.add(new NeuralNetwork(1, 2, 4, 2));
@@ -40,22 +40,24 @@ public class ManyNetworks {
 
     public List<NeuralNetwork> createNextGeneration(List<NeuralNetwork> topPerformingNetworks) {
 
-        List<NeuralNetwork> nextGeneration = new ArrayList<>(1000);
+        List<NeuralNetwork> nextGeneration = new ArrayList<>();
+        Random rand = new Random();
 
-        for (int i = 0; i < topPerformingNetworks.size(); i++) {
+        for (int i = 0; i < 1000; i++) {
+            int index1 = rand.nextInt(topPerformingNetworks.size());
+            int index2;
 
-            for (int j = 0; j < topPerformingNetworks.size(); j++) {
-                if (i != j) {  // Don't merge the network with itself
-                    NeuralNetwork parent1 = topPerformingNetworks.get(i);
-                    NeuralNetwork parent2 = topPerformingNetworks.get(j);
+            do {
+                index2 = rand.nextInt(topPerformingNetworks.size());
+            } while (index1 == index2);
 
-                    NeuralNetwork child = parent1.merge(parent2);
-                    child.mutate(0.1);
+            NeuralNetwork parent1 = topPerformingNetworks.get(index1);
+            NeuralNetwork parent2 = topPerformingNetworks.get(index2);
 
-                    nextGeneration.add(child);
+            NeuralNetwork child = parent1.merge(parent2);
+            child.mutate(0.1);
 
-                }
-            }
+            nextGeneration.add(child);
         }
 
         return nextGeneration;
