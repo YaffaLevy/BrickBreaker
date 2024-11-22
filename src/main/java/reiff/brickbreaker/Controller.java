@@ -127,13 +127,19 @@ public class Controller {
         }
     }
 
+    public boolean paddleHit(){
+        return ball.getY() + ball.getDiameter() >= paddle.getY()
+                && ball.getX() >= paddle.getX()
+                && ball.getX() <= paddle.getX() + paddle.getWidth();
+    }
+
 
     private void checkPaddleCollision() {
         if (ball.getY() + ball.getDiameter() >= paddle.getY()
                 && ball.getX() >= paddle.getX()
                 && ball.getX() <= paddle.getX() + paddle.getWidth()) {
 
-            double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
+            double paddleCenterX = paddle.getCenterX();
             double edgeZoneWidth = paddle.getWidth() * 0.1;
 
             double leftEdgeEnd = paddle.getX() + edgeZoneWidth;

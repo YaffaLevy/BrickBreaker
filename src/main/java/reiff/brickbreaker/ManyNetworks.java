@@ -26,40 +26,36 @@ public class ManyNetworks {
     }
 
     //Here we are creating 1000 networks and storing them in an array.
-    public NeuralNetwork [] generateNetworks() {
+    public List<NeuralNetwork> generateNetworks() {
 
-        NeuralNetwork[] neuralNetworksArray = new NeuralNetwork[1000];
+        List<NeuralNetwork> neuralNetworkList = new ArrayList<>(1000);
 
-        for (int i = 0; i < neuralNetworksArray.length; i++) {
-            neuralNetworksArray[i] = new NeuralNetwork(1, 2, 4, 2);
+        for (int i = 0; i < 1000; i++) {
+            neuralNetworkList.add(new NeuralNetwork(1, 2, 4, 2));
         }
 
-        return neuralNetworksArray;
+        return neuralNetworkList;
     }
-    //now we have an array of 1000 network, one in each position.
+    //now we have a list of 1000 network, one in each position.
 
-    public NeuralNetwork[] createNextGeneration(NeuralNetwork[] topPerformingNetworks) {
-        NeuralNetwork[] nextGeneration = new NeuralNetwork[1000];
+    public List<NeuralNetwork> createNextGeneration(List<NeuralNetwork> topPerformingNetworks) {
 
+        List<NeuralNetwork> nextGeneration = new ArrayList<>(1000);
         int index = 0;
 
-        for (int i = 0; i < topPerformingNetworks.length; i++) {
+        for (int i = 0; i < topPerformingNetworks.size(); i++) {
 
-            for (int j = 0; j < topPerformingNetworks.length; j++) {
+            for (int j = 0; j < topPerformingNetworks.size(); j++) {
                 if (i != j) {  // Don't merge the network with itself
-                    NeuralNetwork parent1 = topPerformingNetworks[i];
-                    NeuralNetwork parent2 = topPerformingNetworks[j];
+                    NeuralNetwork parent1 = topPerformingNetworks.get(i);
+                    NeuralNetwork parent2 = topPerformingNetworks.get(j);
 
                     NeuralNetwork child = parent1.merge(parent2);
                     child.mutate(0.1);
 
-                    nextGeneration[index] = child;
+                    nextGeneration.add(index, child);
                     index++;
 
-
-                    if (index >= nextGeneration.length) {
-                        return nextGeneration;
-                    }
                 }
             }
         }
@@ -70,25 +66,21 @@ public class ManyNetworks {
     //We need to figure out now, where are we letting these new networks play and so on...
 
     //Here we are going to let each network play
-    public Map<NeuralNetwork, Double> networksPlay(NeuralNetwork[] neuralNetworksArray) {
+    public List<NetworkAndScore> networksPlay(List<NeuralNetwork> neuralNetworksArray) {
 
-        Map<NeuralNetwork, Double> performanceMap = new HashMap<>();
-        long maxDurationMillis = 120 * 1000; // 120 seconds max duration
+        List<NetworkAndScore> performanceList = new ArrayList<>();
 
         for (NeuralNetwork neuralNetwork : neuralNetworksArray) {
 
             controller.resetGame();
             controller.startGame();
 
-            long startTime = System.currentTimeMillis();
-            while (!controller.isGameStopped()) {
-                if (System.currentTimeMillis() - startTime > maxDurationMillis) {
-                    System.out.println("Time-out reached, stopping the game.");
-                    break;
-                }
+            int round = 0;
+            int score = 0;
+            while (round < 10000 && !controller.isGameStopped()) {
 
                 controller.updateBallPosition();
-
+                //System.out.println("Ball position " + ball.getX() +", " + ball.getY());
                 double[] input = new double[1];
                 input[0] = calculateAngle();
                 double[] answer = neuralNetwork.guess(input);
@@ -97,67 +89,58 @@ public class ManyNetworks {
                 double rightConfidence = answer[1];
 
 
-                int maxPresses = 12;
-                int numPressesLeft = (int) (leftConfidence * maxPresses);
-                int numPressesRight = (int) (rightConfidence * maxPresses);
-
                 // Simulate key presses based on the neural network's confidence in the choice
                 if (leftConfidence > rightConfidence) {
-                    movePaddleLeft(numPressesLeft);
+                    //System.out.println("paddle position before moving left x: " +paddle.getX() +" Y: "+paddle.getY() );
+                    movePaddleLeft();
+                    //System.out.println("Move left paddle position " + paddle.getX() +", " + paddle.getY());
+                   // System.out.println("paddle position after moving left x: " +paddle.getX() +" Y: "+paddle.getY() );
                 } else {
-                    movePaddleRight(numPressesRight);
+                  //  System.out.println("paddle position before moving right x: " +paddle.getX() +" Y: "+paddle.getY() );
+                    movePaddleRight();
+                    // System.out.println("Move right paddle position " + paddle.getX() +", " + paddle.getY());
+                   // System.out.println("paddle position before moving right x: " +paddle.getX() +" Y: "+paddle.getY() );
+                }
+                round++;
+
+                if (controller.paddleHit()) {
+                    score++;
                 }
             }
 
-            double timeSurvived = (System.currentTimeMillis() - startTime) / 1000.0;
-            if (controller.isGameStopped()) {
-                performanceMap.put(neuralNetwork, timeSurvived);
-            } else {
-                performanceMap.put(neuralNetwork, maxDurationMillis / 1000.0);
-            }
+            NetworkAndScore neuralandscore = new NetworkAndScore(neuralNetwork, score);
+            performanceList.add(neuralandscore);
+
         }
 
-        return performanceMap;
+        return performanceList;
     }
 
 
-    public List<Map.Entry<NeuralNetwork, Double>> getTopPerformingNetworks(Map<NeuralNetwork, Double> performanceMap) {
-        return performanceMap.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue())  // Sort by value (time survived)
-                .limit(10)
+    public List<NetworkAndScore> getTop10NetworksWithScores(List<NeuralNetwork> neuralNetworks) {
+        List<NetworkAndScore> performanceList = networksPlay(neuralNetworks); // Calculate scores
+        return performanceList.stream()
+                .sorted(Comparator.comparingInt(NetworkAndScore::getScore).reversed()) // Sort by score
+                .limit(10) // Get the top 10
                 .collect(Collectors.toList());
     }
 
-    public NeuralNetwork[] getTop10Networks(NeuralNetwork[] neuralNetworksArray) {
-        Map<NeuralNetwork, Double> performanceMap = networksPlay(neuralNetworksArray);
-        List<Map.Entry<NeuralNetwork, Double>> topNetworks = getTopPerformingNetworks(performanceMap);
 
-        NeuralNetwork[] top10 = new NeuralNetwork[topNetworks.size()];
-        for (int i = 0; i < topNetworks.size(); i++) {
-            top10[i] = topNetworks.get(i).getKey();
-        }
 
-        return top10;
-    }
-
-        private double calculateAngle() {
-            double paddleCenterX = paddle.getX() + paddle.getWidth() / 2;
+    private double calculateAngle() {
+            double paddleCenterX = paddle.getCenterX();
             double deltaX = ball.getX() - paddleCenterX;
-            double deltaY = ball.getY() - paddle.getY();
+            double deltaY = ball.getY() - paddle.getCenterY();
             return Math.toDegrees(Math.atan2(deltaY, deltaX));
         }
 
-    private void movePaddleLeft(double movementSpeed) {
-        for (int i = 0; i < movementSpeed; i++) {
+    private void movePaddleLeft() {
             controller.handleKeyEvent(KeyEvent.VK_LEFT);
-        }
+
     }
 
-    private void movePaddleRight(double movementSpeed) {
-        for (int i = 0; i < movementSpeed; i++) {
-            controller.handleKeyEvent(KeyEvent.VK_RIGHT);
-        }
+    private void movePaddleRight() {
+    controller.handleKeyEvent(KeyEvent.VK_RIGHT);
     }
 }
 
