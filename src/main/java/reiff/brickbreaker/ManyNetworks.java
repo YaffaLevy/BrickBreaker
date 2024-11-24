@@ -16,13 +16,11 @@ public class ManyNetworks {
     private final Ball ball;
     private final Paddle paddle;
     private final Controller controller;
-    private final BrickBreakerComponent view;
 
     public ManyNetworks(Ball ball, Paddle paddle, Controller controller, BrickBreakerComponent view) {
         this.ball = ball;
         this.paddle = paddle;
         this.controller = controller;
-        this.view = view;
     }
 
     //Here we are creating 1000 networks and storing them in an array.
@@ -63,8 +61,6 @@ public class ManyNetworks {
         return nextGeneration;
     }
 
-    //We need to figure out now, where are we letting these new networks play and so on...
-
     //Here we are going to let each network play
     public List<NetworkAndScore> networksPlay(List<NeuralNetwork> neuralNetworksArray) {
 
@@ -78,6 +74,7 @@ public class ManyNetworks {
             int round = 0;
             int score = 0;
             while (round < 10000 && !controller.isGameStopped()) {
+
 
                 controller.updateBallPosition();
                 //System.out.println("Ball position " + ball.getX() +", " + ball.getY());
@@ -103,9 +100,9 @@ public class ManyNetworks {
                 }
                 round++;
 
-                if (controller.paddleHit()) {
-                    score++;
-                }
+                //if (controller.paddleHit()) {
+                   score = controller.getPaddleHit();
+                //}
             }
 
             NetworkAndScore neuralandscore = new NetworkAndScore(neuralNetwork, score);
@@ -135,13 +132,16 @@ public class ManyNetworks {
         }
 
     private void movePaddleLeft() {
-            controller.handleKeyEvent(KeyEvent.VK_LEFT);
+
+        controller.handleKeyEvent(KeyEvent.VK_LEFT);
 
     }
 
     private void movePaddleRight() {
-    controller.handleKeyEvent(KeyEvent.VK_RIGHT);
+
+        controller.handleKeyEvent(KeyEvent.VK_RIGHT);
     }
+
 }
 
 

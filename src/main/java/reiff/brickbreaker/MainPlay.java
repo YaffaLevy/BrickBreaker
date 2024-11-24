@@ -19,20 +19,14 @@ public class MainPlay {
         BrickBreakerComponent view = new BrickBreakerComponent(ball, paddle, bricks);
         Controller controller = new Controller(ball, paddle, bricks, view);
 
-        // Create ManyNetworks instance to handle neural network operations
         ManyNetworks manyNetworks = new ManyNetworks(ball, paddle, controller, view);
-
-        // Step 1: Generate the first generation of networks
         List<NeuralNetwork> currentGeneration = manyNetworks.generateNetworks();
-
-        // Step 2: Let the first generation play and get the top 10 networks with scores
         List<NetworkAndScore> topPerformingWithScores = manyNetworks.getTop10NetworksWithScores(currentGeneration);
 
-        // Step 3: Evolve networks over 5 generations
         for (int generation = 0; generation < 5; generation++) {
             System.out.println("Generation: " + (generation + 1));
 
-            // Extract just the networks for the next generation
+            // Extract just the networks for the next generation (to play we need a list of neural networks)
             List<NeuralNetwork> topPerformingNetworks = topPerformingWithScores.stream()
                     .map(NetworkAndScore::getNetwork)
                     .collect(Collectors.toList());

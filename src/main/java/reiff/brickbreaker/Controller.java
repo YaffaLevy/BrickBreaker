@@ -16,6 +16,7 @@ public class Controller {
     private final List<Brick> bricks;
     private final BrickBreakerComponent view;
     private boolean isGameRunning = false;
+    private int paddleHit = 0;
     private static final int COLS = 10;
     private static final int ROWS = 5;
     private static final int BRICK_WIDTH = 60;
@@ -163,7 +164,13 @@ public class Controller {
             } else {
                 ball.setDirectionDegrees(-ball.getDirectionDegrees());
             }
+
+            paddleHit++;
         }
+    }
+
+    public int getPaddleHit(){
+        return paddleHit;
     }
 
 
