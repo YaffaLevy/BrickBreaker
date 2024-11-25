@@ -22,7 +22,7 @@ public class Controller {
     private static final int BRICK_WIDTH = 60;
     private static final int BRICK_HEIGHT = 20;
     private static final int SPACING = 10;
-
+    private static final int GAME_WIDTH = 800;
     public int won = 0;
 
     public Controller(Ball ball, Paddle paddle, List<Brick> bricks, BrickBreakerComponent view) {
@@ -40,7 +40,7 @@ public class Controller {
         if (keyCode == KeyEvent.VK_LEFT) {
             paddle.x = Math.max(0, paddle.x - paddleSpeed);
         } else if (keyCode == KeyEvent.VK_RIGHT) {
-            paddle.x = Math.min(view.getWidth() - paddle.width, paddle.x + paddleSpeed);
+            paddle.x = Math.min(GAME_WIDTH - paddle.width, paddle.x + paddleSpeed);
         }
 
         // Start the game when the UP arrow key is pressed and the game isn't already running
@@ -90,7 +90,6 @@ public class Controller {
         paddle.setX(350);
         paddle.setY(550);
         isGameRunning = false;
-        //((BrickBreakerFrame) SwingUtilities.getWindowAncestor(view)).resetBricks();
         resetBricks();
     }
 
@@ -110,6 +109,7 @@ public class Controller {
         bricks.clear();
         initializeBricks();
         view.repaint();
+        paddleHit = 0;
     }
 
 
@@ -127,13 +127,6 @@ public class Controller {
             }
         }
     }
-
-    public boolean paddleHit(){
-        return ball.getY() + ball.getDiameter() >= paddle.getY()
-                && ball.getX() >= paddle.getX()
-                && ball.getX() <= paddle.getX() + paddle.getWidth();
-    }
-
 
     private void checkPaddleCollision() {
         if (ball.getY() + ball.getDiameter() >= paddle.getY()

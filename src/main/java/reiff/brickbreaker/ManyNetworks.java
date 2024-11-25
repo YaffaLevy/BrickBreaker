@@ -98,11 +98,9 @@ public class ManyNetworks {
                     // System.out.println("Move right paddle position " + paddle.getX() +", " + paddle.getY());
                    // System.out.println("paddle position before moving right x: " +paddle.getX() +" Y: "+paddle.getY() );
                 }
-                round++;
 
-                //if (controller.paddleHit()) {
-                   score = controller.getPaddleHit();
-                //}
+                score = controller.getPaddleHit();
+                round++;
             }
 
             NetworkAndScore neuralandscore = new NetworkAndScore(neuralNetwork, score);

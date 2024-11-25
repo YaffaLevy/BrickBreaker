@@ -7,6 +7,7 @@ import levy.brickbreaker.Paddle;
 import basicneuralnetwork.NeuralNetwork;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,12 +46,15 @@ public class MainPlay {
             }
         }
 
-        // Step 4: Output the final generation of networks
-        System.out.println("Final generation of networks created.");
-        System.out.println("Top 10 Networks from Final Generation:");
-        for (int i = 0; i < topPerformingWithScores.size(); i++) {
-            NetworkAndScore entry = topPerformingWithScores.get(i);
-            System.out.println("Network " + (i + 1) + " Score: " + entry.getScore());
-        }
+        // Step 4: Find and store the best network
+        NetworkAndScore bestNetworkAndScore = topPerformingWithScores.stream()
+                .max(Comparator.comparingInt(NetworkAndScore::getScore)) // Find the highest score
+                .orElseThrow(() -> new IllegalStateException("No networks available")); // Handle empty list case
+
+        NeuralNetwork bestNetwork = bestNetworkAndScore.getNetwork(); // Extract the best network
+        bestNetwork.writeToFile("BestNW");
+// Output the best network's details
+        System.out.println("Best Network's Score: " + bestNetworkAndScore.getScore());
+
     }
 }
