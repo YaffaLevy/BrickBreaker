@@ -5,11 +5,13 @@ import lesser.brickbreaker.BrickBreakerFrame;
 
 import java.io.IOException;
 
+import static basicneuralnetwork.NeuralNetwork.readFromFile;
+
 public class Main {
 
     public static void main(String[] args) throws IOException {
         new BrickBreakerFrame().setVisible(true);
-        NeuralNetwork.readFromFile("BestNW");
+        readFromFile("BestNW.json");
     }
 
 }

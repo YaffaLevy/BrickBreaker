@@ -43,4 +43,12 @@ public class Ball extends Ellipse2D.Double {
         this.y = y;
     }
 
+    @Override
+    public String toString() {
+        return "Ball{" +
+                "directionDegrees=" + directionDegrees +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

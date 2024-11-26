@@ -23,6 +23,7 @@ public class Controller {
     private static final int BRICK_HEIGHT = 20;
     private static final int SPACING = 10;
     private static final int GAME_WIDTH = 800;
+    private static final int GAME_HEIGHT = 600;
     public int won = 0;
 
     public Controller(Ball ball, Paddle paddle, List<Brick> bricks, BrickBreakerComponent view) {
@@ -56,7 +57,7 @@ public class Controller {
             return;
         }
 
-        double radians = Math.toRadians(ball.getDirectionDegrees());
+               double radians = Math.toRadians(ball.getDirectionDegrees());
         double dx = Math.cos(radians) * ball.getSpeed();
         double dy = Math.sin(radians) * ball.getSpeed();
 
@@ -74,13 +75,17 @@ public class Controller {
     }
 
     private void checkWallCollisions() {
-        if (ball.getX() <= 0 || ball.getX() >= view.getWidth() - ball.getDiameter()) {
+        if (ball.getX() <= 0 || ball.getX() >= GAME_WIDTH - ball.getDiameter()) {
             ball.setDirectionDegrees(180 - ball.getDirectionDegrees());
         } else if (ball.getY() <= 0) {
             ball.setDirectionDegrees(-ball.getDirectionDegrees());
-        } else if (ball.getY() >= view.getHeight()) {
-            resetGame();
+        } else if (ball.getY() >= GAME_HEIGHT) {
+            stopGame();
         }
+    }
+
+    public void stopGame() {
+        isGameRunning = false;
     }
 
     public void resetGame() {
@@ -91,6 +96,7 @@ public class Controller {
         paddle.setY(550);
         isGameRunning = false;
         resetBricks();
+        paddleHit = 0;
     }
 
     public void startGame() {
@@ -141,6 +147,7 @@ public class Controller {
 
             double ballAngle = ball.getDirectionDegrees();
 
+            /*
             if (ball.getX() >= leftEdgeEnd
                     && ball.getX() <= paddleCenterX
                     && (ballAngle > 270 || ballAngle < 90)) {
@@ -156,6 +163,16 @@ public class Controller {
                 ball.setDirectionDegrees(270);
             } else {
                 ball.setDirectionDegrees(-ball.getDirectionDegrees());
+            }
+
+             */
+
+            if (ballAngle == 135){
+                ball.setDirectionDegrees(225);
+            } else if (ballAngle == 45) {
+                ball.setDirectionDegrees(315);
+            } else {
+                return;
             }
 
             paddleHit++;
@@ -186,7 +203,7 @@ public class Controller {
         if (bricks.isEmpty()) {
             isGameRunning = false;
             won = 1;
-            resetGame();
+            stopGame();
         }
     }
 

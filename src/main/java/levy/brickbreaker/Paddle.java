@@ -29,4 +29,12 @@ public class Paddle extends Rectangle2D.Double {
     public void setY(double y) {
         this.y = y;
     }
+
+    @Override
+    public String toString() {
+        return "Paddle{" +
+                "x=" + x +
+                ", width=" + width +
+                '}';
+    }
 }

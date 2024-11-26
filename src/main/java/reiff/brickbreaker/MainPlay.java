@@ -11,11 +11,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static basicneuralnetwork.utilities.FileReaderAndWriter.writeToFile;
+
 public class MainPlay {
+    public static NeuralNetwork bestNetwork;
+
     public static void main(String[] args) {
 
         Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
-        Paddle paddle = new Paddle(350, 550, 100, 10, 60);
+        Paddle paddle = new Paddle(350, 550, 100, 10, 20);
         List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = new BrickBreakerComponent(ball, paddle, bricks);
         Controller controller = new Controller(ball, paddle, bricks, view);
@@ -52,7 +56,7 @@ public class MainPlay {
                 .orElseThrow(() -> new IllegalStateException("No networks available")); // Handle empty list case
 
         NeuralNetwork bestNetwork = bestNetworkAndScore.getNetwork(); // Extract the best network
-        bestNetwork.writeToFile("BestNW");
+        writeToFile(bestNetwork,"BestNW");
 // Output the best network's details
         System.out.println("Best Network's Score: " + bestNetworkAndScore.getScore());
 

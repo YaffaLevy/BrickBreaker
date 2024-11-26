@@ -29,7 +29,7 @@ public class ManyNetworks {
         List<NeuralNetwork> neuralNetworkList = new ArrayList<>();
 
         for (int i = 0; i < 1000; i++) {
-            neuralNetworkList.add(new NeuralNetwork(1, 2, 4, 2));
+            neuralNetworkList.add(new NeuralNetwork(2, 2, 4, 2));
         }
 
         return neuralNetworkList;
@@ -77,9 +77,11 @@ public class ManyNetworks {
 
 
                 controller.updateBallPosition();
-                //System.out.println("Ball position " + ball.getX() +", " + ball.getY());
-                double[] input = new double[1];
-                input[0] = calculateAngle();
+
+                double[] input = new double[2];
+                input[0] = ball.x;
+                input[1] = paddle.x;
+
                 double[] answer = neuralNetwork.guess(input);
 
                 double leftConfidence = answer[0];
@@ -88,15 +90,9 @@ public class ManyNetworks {
 
                 // Simulate key presses based on the neural network's confidence in the choice
                 if (leftConfidence > rightConfidence) {
-                    //System.out.println("paddle position before moving left x: " +paddle.getX() +" Y: "+paddle.getY() );
                     movePaddleLeft();
-                    //System.out.println("Move left paddle position " + paddle.getX() +", " + paddle.getY());
-                   // System.out.println("paddle position after moving left x: " +paddle.getX() +" Y: "+paddle.getY() );
                 } else {
-                  //  System.out.println("paddle position before moving right x: " +paddle.getX() +" Y: "+paddle.getY() );
                     movePaddleRight();
-                    // System.out.println("Move right paddle position " + paddle.getX() +", " + paddle.getY());
-                   // System.out.println("paddle position before moving right x: " +paddle.getX() +" Y: "+paddle.getY() );
                 }
 
                 score = controller.getPaddleHit();

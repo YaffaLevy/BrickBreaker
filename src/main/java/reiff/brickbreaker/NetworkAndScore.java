@@ -17,4 +17,12 @@ public class NetworkAndScore {
     public int getScore() {
         return score;
     }
+
+    @Override
+    public String toString() {
+        return "NetworkAndScore{" +
+                "network=" + network +
+                ", score=" + score +
+                '}';
+    }
 }
