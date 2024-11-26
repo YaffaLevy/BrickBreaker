@@ -14,12 +14,14 @@ public class ManyNetworks {
     private final Ball ball;
     private final Paddle paddle;
     private final Controller controller;
+    private final int viewWidth;
     private Random random;
 
-    public ManyNetworks(Ball ball, Paddle paddle, Controller controller) {
+    public ManyNetworks(Ball ball, Paddle paddle, Controller controller, int viewWidth) {
         this.ball = ball;
         this.paddle = paddle;
         this.controller = controller;
+        this.viewWidth = viewWidth;
     }
 
     //Here we are creating 1000 networks and storing them in an array.
@@ -132,7 +134,17 @@ public class ManyNetworks {
             double deltaY = ball.getY() - paddle.getY();
             return Math.toDegrees(Math.atan2(deltaY, deltaX));
         }
+    private void movePaddleLeft(double movementSpeed) {
+        double newX = paddle.getX() - movementSpeed * paddle.getSpeed();
+        paddle.setX(Math.max(newX, 0));
+    }
+
+    private void movePaddleRight(double movementSpeed) {
+        double newX = paddle.getX() + movementSpeed * paddle.getSpeed();
+        paddle.setX(Math.min(newX, viewWidth - paddle.getWidth()));
+    }
 }
+
 
 
 
