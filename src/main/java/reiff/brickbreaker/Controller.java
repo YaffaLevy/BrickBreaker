@@ -140,7 +140,7 @@ public class Controller {
         Timer gameTimer = new Timer(50, e -> {
 
             startGame();
-            handleKeyEvent(KeyEvent.VK_UP);
+           // handleKeyEvent(KeyEvent.VK_UP);
 
             int round = 0;
             while (round < 10000 && !isGameStopped()) {
@@ -169,6 +169,10 @@ public class Controller {
             }
         });
         gameTimer.start();
+    }
+
+    public int getPaddleHit(){
+        return paddleHit;
     }
 
     private void checkPaddleCollision() {
@@ -218,9 +222,7 @@ public class Controller {
         }
     }
 
-    public int getPaddleHit(){
-        return paddleHit;
-    }
+
 
 
     private void checkBrickCollisions() {

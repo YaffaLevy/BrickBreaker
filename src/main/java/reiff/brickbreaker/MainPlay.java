@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static basicneuralnetwork.utilities.FileReaderAndWriter.writeToFile;
 
 public class MainPlay {
-    static NeuralNetwork bestNetwork;
+
 
     public static void main(String[] args) {
 
@@ -56,7 +56,7 @@ public class MainPlay {
                 .max(Comparator.comparingInt(NetworkAndScore::getScore)) // Find the highest score
                 .orElseThrow(() -> new IllegalStateException("No networks available")); // Handle empty list case
 
-        bestNetwork = bestNetworkAndScore.getNetwork(); // Extract the best network
+       NeuralNetwork bestNetwork = bestNetworkAndScore.getNetwork(); // Extract the best network
         bestNetwork.writeToFile("BestNW");
 // Output the best network's details
         System.out.println("Best Network's Score: " + bestNetworkAndScore.getScore());
