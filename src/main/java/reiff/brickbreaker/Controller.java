@@ -1,11 +1,13 @@
 package reiff.brickbreaker;
 
+import basicneuralnetwork.NeuralNetwork;
 import lesser.brickbreaker.BrickBreakerFrame;
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Brick;
 import levy.brickbreaker.Paddle;
 import lesser.brickbreaker.BrickBreakerComponent;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Random;
@@ -134,6 +136,41 @@ public class Controller {
         }
     }
 
+    public void startGameForNw(NeuralNetwork bestNw){
+        Timer gameTimer = new Timer(50, e -> {
+
+            startGame();
+            handleKeyEvent(KeyEvent.VK_UP);
+
+            int round = 0;
+            while (round < 10000 && !isGameStopped()) {
+
+
+                updateBallPosition();
+
+                double[] input = new double[2];
+                input[0] = ball.x;
+                input[1] = paddle.x;
+
+                double[] answer = bestNw.guess(input);
+
+                double leftConfidence = answer[0];
+                double rightConfidence = answer[1];
+
+
+                // Simulate key presses based on the neural network's confidence in the choice
+                if (leftConfidence > rightConfidence) {
+                    handleKeyEvent(KeyEvent.VK_LEFT);
+                } else {
+                    handleKeyEvent(KeyEvent.VK_RIGHT);
+                }
+
+                round++;
+            }
+        });
+        gameTimer.start();
+    }
+
     private void checkPaddleCollision() {
         if (ball.getY() + ball.getDiameter() >= paddle.getY()
                 && ball.getX() >= paddle.getX()
@@ -167,12 +204,14 @@ public class Controller {
 
              */
 
+           // ballAngle = ((ball.getDirectionDegrees() % 360) + 360) % 360;
             if (ballAngle == 135){
                 ball.setDirectionDegrees(225);
             } else if (ballAngle == 45) {
                 ball.setDirectionDegrees(315);
             } else {
-                return;
+               // System.out.println("Ball going at angle: "+ ballAngle);
+                return; //maybe there is another angle that the ball can go at?
             }
 
             paddleHit++;

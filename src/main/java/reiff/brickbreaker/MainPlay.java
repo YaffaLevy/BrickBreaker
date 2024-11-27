@@ -1,6 +1,7 @@
 package reiff.brickbreaker;
 
 import lesser.brickbreaker.BrickBreakerComponent;
+import lesser.brickbreaker.BrickBreakerFrame;
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Brick;
 import levy.brickbreaker.Paddle;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 import static basicneuralnetwork.utilities.FileReaderAndWriter.writeToFile;
 
 public class MainPlay {
-    public static NeuralNetwork bestNetwork;
+    static NeuralNetwork bestNetwork;
 
     public static void main(String[] args) {
 
@@ -55,8 +56,8 @@ public class MainPlay {
                 .max(Comparator.comparingInt(NetworkAndScore::getScore)) // Find the highest score
                 .orElseThrow(() -> new IllegalStateException("No networks available")); // Handle empty list case
 
-        NeuralNetwork bestNetwork = bestNetworkAndScore.getNetwork(); // Extract the best network
-        writeToFile(bestNetwork,"BestNW");
+        bestNetwork = bestNetworkAndScore.getNetwork(); // Extract the best network
+        bestNetwork.writeToFile("BestNW");
 // Output the best network's details
         System.out.println("Best Network's Score: " + bestNetworkAndScore.getScore());
 

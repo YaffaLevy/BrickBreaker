@@ -1,5 +1,6 @@
 package lesser.brickbreaker;
 
+import basicneuralnetwork.NeuralNetwork;
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Paddle;
 import levy.brickbreaker.Brick;
@@ -9,7 +10,6 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class BrickBreakerFrame extends JFrame {
     /*
@@ -62,27 +62,30 @@ public class BrickBreakerFrame extends JFrame {
 
     }
 
-    /*
-    public void resetBricks() {
-        bricks.clear();
-        initializeBricks();
-        view.repaint();
-    }
+    public BrickBreakerFrame(NeuralNetwork bestNw) {
+        setSize(800, 600);
+        setTitle("Brick Breaker");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
-    private void initializeBricks() {
-        Random random = new Random();
-        int xoffset = (getWidth() - (COLS * (BRICK_WIDTH + SPACING) - SPACING)) / 2;
-
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
-                if (random.nextBoolean()) {
-                    int x = xoffset + col * (BRICK_WIDTH + SPACING);
-                    int y = 50 + row * (BRICK_HEIGHT + SPACING);
-                    bricks.add(new Brick(x, y, BRICK_WIDTH, BRICK_HEIGHT));
-                }
+        add(view);
+        view.setBounds(0, 0, 800, 600);
+        setVisible(true);
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                controller.handleKeyEvent(e.getKeyCode());
             }
-        }
-    }
+        });
 
-     */
+        setFocusable(true);
+        requestFocusInWindow();
+
+        controller.initializeBricks();
+
+        if (bestNw != null) {
+            controller.startGameForNw(bestNw);
+        }
+
+    }
 }
