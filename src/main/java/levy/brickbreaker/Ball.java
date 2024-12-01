@@ -6,6 +6,8 @@ public class Ball extends Ellipse2D.Double {
     private double diameter;
     private double directionDegrees;
     private double speed;
+    public double dx;
+    public double dy;
 
     public Ball(double x, double y, double height, double width,
                 double diameter, double speed, double directionDegree) {
@@ -16,6 +18,35 @@ public class Ball extends Ellipse2D.Double {
         this.directionDegrees = directionDegree;
 
     }
+
+    public void move(){
+
+        x += dx;
+        y += dy;
+    }
+
+    public boolean collides(Paddle paddle){
+        if (getY() + getDiameter() >= paddle.getY()
+                && getX() >= paddle.getX()
+                && getX() <= paddle.getX() + paddle.getWidth()) {
+            return true;
+        }
+        return false;
+    }
+
+    public void collidesRightWall(){
+
+        dx = -dx;
+    }
+
+    public void collidesLeftWall(){
+        dx = -dx;
+    }
+
+    public void collidesTopWall(){
+        dy = -dy;
+    }
+
 
     public double getDirectionDegrees() {
         return directionDegrees;

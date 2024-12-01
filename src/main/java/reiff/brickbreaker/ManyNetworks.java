@@ -12,17 +12,6 @@ import java.util.stream.Collectors;
 
 
 public class ManyNetworks {
-
-    private final Ball ball;
-    private final Paddle paddle;
-    private final Controller controller;
-
-    public ManyNetworks(Ball ball, Paddle paddle, Controller controller, BrickBreakerComponent view) {
-        this.ball = ball;
-        this.paddle = paddle;
-        this.controller = controller;
-    }
-
     //Here we are creating 1000 networks and storing them in an array.
     public List<NeuralNetwork> generateNetworks() {
 
@@ -62,78 +51,59 @@ public class ManyNetworks {
     }
 
     //Here we are going to let each network play
-    public List<NetworkAndScore> networksPlay(List<NeuralNetwork> neuralNetworksArray) {
 
-        List<NetworkAndScore> performanceList = new ArrayList<>();
+//    public List<NetworkAndScore> networksPlay(List<NeuralNetwork> neuralNetworksArray) {
+//
+//        List<NetworkAndScore> performanceList = new ArrayList<>();
+//
+//        for (NeuralNetwork neuralNetwork : neuralNetworksArray) {
+//
+//            controller.resetGame();
+//            controller.startGame();
+//
+//            int round = 0;
+//            int score = 0;
+//            while (round < 10000 && !controller.isGameStopped()) {
+//
+//
+//                controller.updateBallPosition();
+//
+//                double[] input = new double[2];
+//                input[0] = ball.x;
+//                input[1] = paddle.x;
+//
+//                double[] answer = neuralNetwork.guess(input);
+//
+//                double leftConfidence = answer[0];
+//                double rightConfidence = answer[1];
+//
+//
+//                // Simulate key presses based on the neural network's confidence in the choice
+//                if (leftConfidence > rightConfidence) {
+//                    movePaddleLeft();
+//                } else {
+//                    movePaddleRight();
+//                }
+//
+//                score = controller.getPaddleHit();
+//                round++;
+//            }
+//
+//            NetworkAndScore neuralandscore = new NetworkAndScore(neuralNetwork, score);
+//            performanceList.add(neuralandscore);
+//
+//        }
+//
+//        return performanceList;
+//    }
 
-        for (NeuralNetwork neuralNetwork : neuralNetworksArray) {
 
-            controller.resetGame();
-            controller.startGame();
-
-            int round = 0;
-            int score = 0;
-            while (round < 10000 && !controller.isGameStopped()) {
-
-
-                controller.updateBallPosition();
-
-                double[] input = new double[2];
-                input[0] = ball.x;
-                input[1] = paddle.x;
-
-                double[] answer = neuralNetwork.guess(input);
-
-                double leftConfidence = answer[0];
-                double rightConfidence = answer[1];
-
-
-                // Simulate key presses based on the neural network's confidence in the choice
-                if (leftConfidence > rightConfidence) {
-                    movePaddleLeft();
-                } else {
-                    movePaddleRight();
-                }
-
-                score = controller.getPaddleHit();
-                round++;
-            }
-
-            NetworkAndScore neuralandscore = new NetworkAndScore(neuralNetwork, score);
-            performanceList.add(neuralandscore);
-
-        }
-
-        return performanceList;
-    }
-
-
-    public List<NetworkAndScore> getTop10NetworksWithScores(List<NeuralNetwork> neuralNetworks) {
-        List<NetworkAndScore> performanceList = networksPlay(neuralNetworks); // Calculate scores
+    public List<NetworkAndScore> getTop10NetworksWithScores(List<NetworkAndScore> performanceList) {
+        //List<NetworkAndScore> performanceList = networksPlay(neuralNetworks); // Calculate scores
         return performanceList.stream()
                 .sorted(Comparator.comparingInt(NetworkAndScore::getScore).reversed()) // Sort by score
                 .limit(10) // Get the top 10
                 .collect(Collectors.toList());
-    }
-
-
-
-    private double calculateAngle() {
-            double paddleCenterX = paddle.getCenterX();
-            double deltaX = ball.getX() - paddleCenterX;
-            double deltaY = ball.getY() - paddle.getCenterY();
-            return Math.toDegrees(Math.atan2(deltaY, deltaX));
-        }
-
-    private void movePaddleLeft() {
-
-        controller.handleKeyEvent(KeyEvent.VK_LEFT);
-
-    }
-
-    private void movePaddleRight() {
-
-        controller.handleKeyEvent(KeyEvent.VK_RIGHT);
     }
 
 }
