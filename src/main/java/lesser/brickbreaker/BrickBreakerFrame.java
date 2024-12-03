@@ -5,6 +5,7 @@ import levy.brickbreaker.Ball;
 import levy.brickbreaker.Paddle;
 import levy.brickbreaker.Brick;
 import reiff.brickbreaker.Controller;
+import reiff.brickbreaker.Simulation;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -19,7 +20,7 @@ public class BrickBreakerFrame extends JFrame {
     private final List<Brick> bricks = new ArrayList<>();
 
     private final BrickBreakerComponent view = new BrickBreakerComponent(ball, paddle, bricks);
-   // private boolean ballMoving = false;
+    // private boolean ballMoving = false;
     private final Controller controller = new Controller(ball, paddle, bricks, view);
 
     public BrickBreakerFrame() {
@@ -63,24 +64,26 @@ public class BrickBreakerFrame extends JFrame {
         add(view);
         view.setBounds(0, 0, 800, 600);
         setVisible(true);
-        /*
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                controller.handleKeyEvent(e.getKeyCode());
-            }
-        });
-
-         */
 
         setFocusable(true);
         requestFocusInWindow();
 
-        controller.initializeBricks();
+        ///controller.initializeBricks();
+        Simulation simulation = new Simulation(bestNw, ball, paddle, getWidth(), getHeight());
 
         if (bestNw != null) {
-            controller.startGameForNw(bestNw);
-        }
 
+            Timer gameTimer = new Timer(50, e -> {
+
+                simulation.startGame();
+
+                int round = 0;
+                while (round < 10000 && simulation.advance()) {
+                    round++;
+                }
+            view.repaint();
+            });
+            gameTimer.start();
+        }
     }
 }

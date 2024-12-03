@@ -16,6 +16,7 @@ public class Ball extends Ellipse2D.Double {
         this.diameter = diameter;
         this.speed = speed;
         this.directionDegrees = directionDegree;
+        initializeVelocity();
 
     }
 
@@ -29,6 +30,7 @@ public class Ball extends Ellipse2D.Double {
         if (getY() + getDiameter() >= paddle.getY()
                 && getX() >= paddle.getX()
                 && getX() <= paddle.getX() + paddle.getWidth()) {
+
             return true;
         }
         return false;
@@ -72,6 +74,12 @@ public class Ball extends Ellipse2D.Double {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    public void initializeVelocity() {
+        double radians = Math.toRadians(directionDegrees);
+        dx = speed * Math.cos(radians);
+        dy = speed * Math.sin(radians);
     }
 
     @Override

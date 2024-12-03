@@ -70,14 +70,12 @@ public class TrainAi {
         for (NeuralNetwork neuralNetwork : currentGeneration) {
 
             Simulation simulation = new Simulation(neuralNetwork, ball, paddle, 800, 600);
-           simulation.resetGame();
+            simulation.resetGame();
             simulation.startGame();
 
             int round = 0;
             int score = 0;
-            while (round < 10000 && !simulation.isGameStopped()) {
-
-                simulation.advance();
+            while (round < 10000 && simulation.advance()) {
                 score = simulation.getScore();
                 round++;
             }

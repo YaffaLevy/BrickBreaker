@@ -27,8 +27,8 @@ public class Simulation {
 
     public boolean advance(){
 
-                ball.move();
-                checkCollisions();
+        checkCollisions();
+        ball.move();
 
                 double[] input = new double[2];
                 input[0] = ball.x;
@@ -40,13 +40,11 @@ public class Simulation {
                 double rightConfidence = answer[1];
 
 
-                // Simulate key presses based on the neural network's confidence in the choice
                 if (leftConfidence > rightConfidence) {
                     movePaddleLeft();
                 } else {
                     movePaddleRight();
                 }
-
 
         return !(ball.getY() >= height);
 
@@ -94,10 +92,9 @@ public class Simulation {
 
     private void movePaddleLeft(){
 
-            paddle.x = Math.max(0, paddle.x - paddle.getSpeed());
+        paddle.x = Math.max(0, paddle.x - paddle.getSpeed());
 
-
-        }
+    }
 
     private void movePaddleRight(){
 
@@ -117,6 +114,7 @@ public class Simulation {
         ball.setX(390);
         ball.setY(510);
         ball.setDirectionDegrees(45);
+        ball.initializeVelocity();
         paddle.setX(350);
         paddle.setY(550);
         isGameRunning = false;
@@ -132,5 +130,6 @@ public class Simulation {
     public int getScore(){
         return paddleHit;
     }
+
 
 }
