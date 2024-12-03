@@ -79,7 +79,7 @@ public class Simulation {
 
     public void paddleCollision() {
 
-        if (ball.collides(paddle)){
+        if (ball.collides(paddle)) {
             ball.dy = -ball.dy;
             ball.dx = ((paddle.getCenterX() - ball.getCenterX()) / (paddle.width)/2);
             paddleHit++;
