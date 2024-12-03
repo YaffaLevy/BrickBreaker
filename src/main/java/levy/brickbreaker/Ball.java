@@ -20,13 +20,13 @@ public class Ball extends Ellipse2D.Double {
 
     }
 
-    public void move(){
+    public void move() {
 
         x += dx;
         y += dy;
     }
 
-    public boolean collides(Paddle paddle){
+    public boolean collides(Paddle paddle) {
         if (getY() + getDiameter() >= paddle.getY()
                 && getX() >= paddle.getX()
                 && getX() <= paddle.getX() + paddle.getWidth()) {
@@ -36,16 +36,16 @@ public class Ball extends Ellipse2D.Double {
         return false;
     }
 
-    public void collidesRightWall(){
+    public void collidesRightWall() {
 
         dx = -dx;
     }
 
-    public void collidesLeftWall(){
+    public void collidesLeftWall() {
         dx = -dx;
     }
 
-    public void collidesTopWall(){
+    public void collidesTopWall() {
         dy = -dy;
     }
 
@@ -84,10 +84,14 @@ public class Ball extends Ellipse2D.Double {
 
     @Override
     public String toString() {
-        return "Ball{" +
-                "directionDegrees=" + directionDegrees +
-                ", x=" + x +
-                ", y=" + y +
+        return "Ball{"
+                +
+                "directionDegrees=" + directionDegrees
+                +
+                ", x=" + x
+                +
+                ", y=" + y
+                +
                 '}';
     }
 }

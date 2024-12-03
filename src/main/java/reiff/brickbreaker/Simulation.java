@@ -17,7 +17,7 @@ public class Simulation {
     private boolean isGameRunning = false;
     private int paddleHit = 0;
 
-    public Simulation (NeuralNetwork neuralNetwork, Ball ball, Paddle paddle, int width, int height){
+    public Simulation(NeuralNetwork neuralNetwork, Ball ball, Paddle paddle, int width, int height) {
         this.neuralNetwork = neuralNetwork;
         this.ball = ball;
         this.paddle = paddle;
@@ -25,7 +25,7 @@ public class Simulation {
         this.height = height;
     }
 
-    public boolean advance(){
+    public boolean advance() {
 
         checkCollisions();
         ball.move();
@@ -50,25 +50,25 @@ public class Simulation {
 
     }
 
-    public void checkCollisions(){
+    public void checkCollisions() {
         wallCollisions();
         topCollision();
         brickCollision();
         paddleCollision();
     }
 
-    public void wallCollisions(){
+    public void wallCollisions() {
 
         if (ball.getX() <= 0) {
             ball.collidesLeftWall();
         }
-        else if(ball.getX() >= width - ball.getDiameter()) {
+        else if (ball.getX() >= width - ball.getDiameter()) {
             ball.collidesRightWall();
         }
     }
 
-    public void topCollision(){
-        if (ball.getY() <= 0){
+    public void topCollision() {
+        if (ball.getY() <= 0) {
             ball.collidesTopWall();
         }
     }
@@ -77,9 +77,9 @@ public class Simulation {
         return;
     }
 
-    public void paddleCollision(){
+    public void paddleCollision() {
 
-        if(ball.collides(paddle)){
+        if (ball.collides(paddle)){
             ball.dy = -ball.dy;
             ball.dx = ((paddle.getCenterX() - ball.getCenterX()) / (paddle.width)/2);
             paddleHit++;
@@ -90,13 +90,13 @@ public class Simulation {
 
     }
 
-    private void movePaddleLeft(){
+    private void movePaddleLeft() {
 
         paddle.x = Math.max(0, paddle.x - paddle.getSpeed());
 
     }
 
-    private void movePaddleRight(){
+    private void movePaddleRight() {
 
         paddle.x = Math.min(width - paddle.width, paddle.x + paddle.getSpeed());
 
@@ -118,7 +118,7 @@ public class Simulation {
         paddle.setX(350);
         paddle.setY(550);
         isGameRunning = false;
-       // resetBricks();
+        // resetBricks();
         paddleHit = 0;
     }
 
@@ -127,9 +127,8 @@ public class Simulation {
     }
 
 
-    public int getScore(){
+    public int getScore() {
         return paddleHit;
     }
-
 
 }

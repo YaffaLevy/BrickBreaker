@@ -10,8 +10,8 @@ import static basicneuralnetwork.NeuralNetwork.readFromFile;
 public class PlayAi {
 
     public static void main(String[] args) throws IOException {
-        NeuralNetwork topNW = readFromFile("BestNW.json");
-        new BrickBreakerFrame(topNW).setVisible(true);
+        NeuralNetwork topNw = readFromFile("BestNW.json");
+        new BrickBreakerFrame(topNw).setVisible(true);
 
     }
 

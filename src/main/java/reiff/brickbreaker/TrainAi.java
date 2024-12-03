@@ -57,9 +57,9 @@ public class TrainAi {
                 .max(Comparator.comparingInt(NetworkAndScore::getScore)) // Find the highest score
                 .orElseThrow(() -> new IllegalStateException("No networks available")); // Handle empty list case
 
-       NeuralNetwork bestNetwork = bestNetworkAndScore.getNetwork(); // Extract the best network
+        NeuralNetwork bestNetwork = bestNetworkAndScore.getNetwork(); // Extract the best network
         bestNetwork.writeToFile("BestNW");
-// Output the best network's details
+        // Output the best network's details
         System.out.println("Best Network's Score: " + bestNetworkAndScore.getScore());
 
     }

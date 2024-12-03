@@ -32,9 +32,12 @@ public class Paddle extends Rectangle2D.Double {
 
     @Override
     public String toString() {
-        return "Paddle{" +
-                "x=" + x +
-                ", width=" + width +
+        return "Paddle{"
+                +
+                "x=" + x
+                +
+                ", width=" + width
+                +
                 '}';
     }
 }

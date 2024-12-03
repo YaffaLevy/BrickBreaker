@@ -136,11 +136,11 @@ public class Controller {
         }
     }
 
-    public void startGameForNw(NeuralNetwork bestNw){
+    public void startGameForNw(NeuralNetwork bestNw) {
         Timer gameTimer = new Timer(50, e -> {
 
             startGame();
-           // handleKeyEvent(KeyEvent.VK_UP);
+            // handleKeyEvent(KeyEvent.VK_UP);
 
             int round = 0;
             while (round < 10000 && !isGameStopped()) {
@@ -171,7 +171,7 @@ public class Controller {
         gameTimer.start();
     }
 
-    public int getPaddleHit(){
+    public int getPaddleHit() {
         return paddleHit;
     }
 
@@ -208,13 +208,13 @@ public class Controller {
 
              */
 
-           // ballAngle = ((ball.getDirectionDegrees() % 360) + 360) % 360;
-            if (ballAngle == 135){
+            // ballAngle = ((ball.getDirectionDegrees() % 360) + 360) % 360;
+            if (ballAngle == 135) {
                 ball.setDirectionDegrees(225);
             } else if (ballAngle == 45) {
                 ball.setDirectionDegrees(315);
             } else {
-               // System.out.println("Ball going at angle: "+ ballAngle);
+                // System.out.println("Ball going at angle: "+ ballAngle);
                 return; //maybe there is another angle that the ball can go at?
             }
 

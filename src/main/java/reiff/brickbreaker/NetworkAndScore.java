@@ -3,8 +3,10 @@ package reiff.brickbreaker;
 import basicneuralnetwork.NeuralNetwork;
 
 public class NetworkAndScore {
+
     private NeuralNetwork network;
     private int score;
+
     public NetworkAndScore(NeuralNetwork network, int score) {
         this.network = network;
         this.score = score;
@@ -20,9 +22,12 @@ public class NetworkAndScore {
 
     @Override
     public String toString() {
-        return "NetworkAndScore{" +
-                "network=" + network +
-                ", score=" + score +
+        return "NetworkAndScore{"
+                +
+                "network=" + network
+                +
+                ", score=" + score
+                +
                 '}';
     }
 }

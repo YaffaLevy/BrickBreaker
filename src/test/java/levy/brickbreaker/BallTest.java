@@ -29,7 +29,7 @@ class BallTest {
         Paddle paddle = new Paddle(350, 550, 100, 10, 20);
 
         //when
-        boolean collied =ball.collides(paddle);
+        boolean collied = ball.collides(paddle);
 
         //then
         assertTrue(collied);

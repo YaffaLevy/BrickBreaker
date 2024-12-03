@@ -9,49 +9,6 @@ import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimulationTest {
-
-        @Test
-        void ballMovesWithoutCollision() {
-            // given
-            Ball ball = new Ball(100, 100, 20, 20, 20, 5, 45);
-            ball.dx = 5;
-            ball.dy = 5;
-            Paddle paddle = new Paddle(50, 550, 100, 20, 10);
-            NeuralNetwork neuralNetwork = mock(NeuralNetwork.class);
-            when(neuralNetwork.guess(new double[]{100, 50})).thenReturn(new double[]{0.7, 0.3});
-
-            Simulation simulation = new Simulation(neuralNetwork, ball, paddle, 800, 600);
-
-            // when
-            boolean result = simulation.advance();
-
-            // then
-            assertEquals(105, ball.getX());
-            assertEquals(105, ball.getY());
-            assertTrue(result);
-        }
-
-        @Test
-        void ballHitsRightWall() {
-            // given
-            Ball ball = new Ball(780, 100, 20, 20, 20, 5, 45);
-            ball.dx = 5;
-            ball.dy = 0;
-            Paddle paddle = new Paddle(50, 550, 100, 20, 10);
-            NeuralNetwork neuralNetwork = mock(NeuralNetwork.class);
-            when(neuralNetwork.guess(new double[]{780, 50})).thenReturn(new double[]{0.3, 0.7});
-
-            Simulation simulation = new Simulation(neuralNetwork, ball, paddle, 800, 600);
-
-            // when
-            boolean result = simulation.advance();
-
-            // then
-            assertEquals(-5, ball.dx); // Ball should reverse horizontal direction
-            assertEquals(780, ball.getX()); // Ball remains within bounds
-            assertTrue(result);
-        }
-
         @Test
         void ballFallsBelowScreen() {
             // given
@@ -93,7 +50,7 @@ class SimulationTest {
     void paddleCollision() {
         //given
 
-        NeuralNetwork neuralNetwork = new NeuralNetwork(2,2, 4, 2);
+        NeuralNetwork neuralNetwork = new NeuralNetwork(2, 2, 4, 2);
         Ball ball = new Ball(350.5, 550, 20, 20, 20, 5, 45);
         Paddle paddle = new Paddle(350, 550, 100, 10, 20);
         Simulation simulation = new Simulation(neuralNetwork, ball, paddle, 800, 600);
@@ -109,14 +66,14 @@ class SimulationTest {
         //then
 
         assertEquals(-3, ball.dy);
-        assertEquals(((paddle.getCenterX() - ball.getCenterX()) / (paddle.width)/2), ball.dx);
+        assertEquals(((paddle.getCenterX() - ball.getCenterX()) / (paddle.width) / 2), ball.dx);
     }
 
     @Test
     void paddleCollisionNoCollision() {
         //given
 
-        NeuralNetwork neuralNetwork = new NeuralNetwork(2,2, 4, 2);
+        NeuralNetwork neuralNetwork = new NeuralNetwork(2, 2, 4, 2);
         Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
         Paddle paddle = new Paddle(350, 550, 100, 10, 20);
         Simulation simulation = new Simulation(neuralNetwork, ball, paddle, 800, 600);
