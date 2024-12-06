@@ -37,7 +37,7 @@ public class BrickBreakerComponent extends JComponent {
 
         // Draw ball
         g2.setColor(Color.WHITE);
-        g2.fillOval((int) ball.getX(), (int) ball.getY(), (int) ball.getDiameter(), (int) ball.getDiameter());
+        g2.fillOval((int) ball.getX(), (int) ball.getY(), (int) ball.getWidth(), (int) ball.getHeight());
 
         // Draw bricks
         for (Brick brick : bricks) {

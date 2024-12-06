@@ -5,9 +5,12 @@ import levy.brickbreaker.Brick;
 import levy.brickbreaker.Paddle;
 import basicneuralnetwork.NeuralNetwork;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 
@@ -16,15 +19,16 @@ public class TrainAi {
 
     public static void main(String[] args) {
 
-        Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
+        Ball ball = new Ball(390, 510, 20, 20, 1, 45);
         Paddle paddle = new Paddle(350, 550, 100, 10, 20);
         List<Brick> bricks = new ArrayList<>();
+        Random random = new Random();
 
         ManyNetworks manyNetworks = new ManyNetworks();
 
         List<NeuralNetwork> currentGeneration = manyNetworks.generateNetworks();
 
-        List<NetworkAndScore> trained = play(currentGeneration, ball, paddle);
+        List<NetworkAndScore> trained = play(random, currentGeneration, ball, paddle);
 
         List<NetworkAndScore> topPerformingWithScores = manyNetworks.getTop10NetworksWithScores(trained);
 
@@ -40,7 +44,7 @@ public class TrainAi {
             // Create the next generation based on the top-performing networks
             currentGeneration = manyNetworks.createNextGeneration(topPerformingNetworks);
 
-            trained = play(currentGeneration, ball, paddle);
+            trained = play(random, currentGeneration, ball, paddle);
             // Let the new generation play and determine the top 10 networks with scores
             topPerformingWithScores = manyNetworks.getTop10NetworksWithScores(trained);
 
@@ -57,33 +61,42 @@ public class TrainAi {
                 .max(Comparator.comparingInt(NetworkAndScore::getScore)) // Find the highest score
                 .orElseThrow(() -> new IllegalStateException("No networks available")); // Handle empty list case
 
+        System.out.println(bestNetworkAndScore);
         NeuralNetwork bestNetwork = bestNetworkAndScore.getNetwork(); // Extract the best network
+
         bestNetwork.writeToFile("BestNW");
+        //InputStream in = TrainAi.class.getClassLoader().getResourceAsStream("BestNW.json");
+       /*
+        try {
+            InputStream in = TrainAi.class.getClassLoader().getResourceAsStream("BestNW.json");
+        } catch (IOException e) {
+            // Handle any exceptions silently
+
+        }
+
+        */
         // Output the best network's details
         System.out.println("Best Network's Score: " + bestNetworkAndScore.getScore());
 
     }
 
-    private static List<NetworkAndScore> play(List<NeuralNetwork> currentGeneration, Ball ball, Paddle paddle) {
+    private static List<NetworkAndScore> play(Random random, List<NeuralNetwork> currentGeneration, Ball ball, Paddle paddle) {
         List<NetworkAndScore> performanceList = new ArrayList<>();
 
         for (NeuralNetwork neuralNetwork : currentGeneration) {
 
-            Simulation simulation = new Simulation(neuralNetwork, ball, paddle, 800, 600);
-            simulation.resetGame();
-            simulation.startGame();
+            Simulation simulation = new Simulation(neuralNetwork, random.nextLong(), ball, paddle, 800, 600);
 
             int round = 0;
-            int score = 0;
             while (round < 10000 && simulation.advance()) {
-                score = simulation.getScore();
                 round++;
             }
-
-          NetworkAndScore neuralandscore = new NetworkAndScore(neuralNetwork, score);
-          performanceList.add(neuralandscore);
+            int score = simulation.getScore();
+            NetworkAndScore neuralandscore = new NetworkAndScore(neuralNetwork, score, simulation.getSeed());
+            performanceList.add(neuralandscore);
 
         }
         return performanceList;
     }
+
 }

@@ -72,12 +72,12 @@ public class Controller {
 
     private void checkCollisions() {
         checkWallCollisions();
-        checkPaddleCollision();
+        //checkPaddleCollision();
         checkBrickCollisions();
     }
 
     private void checkWallCollisions() {
-        if (ball.getX() <= 0 || ball.getX() >= GAME_WIDTH - ball.getDiameter()) {
+        if (ball.getX() <= 0 || ball.getX() >= GAME_WIDTH - ball.getWidth()) {
             ball.setDirectionDegrees(180 - ball.getDirectionDegrees());
         } else if (ball.getY() <= 0) {
             ball.setDirectionDegrees(-ball.getDirectionDegrees());
@@ -175,6 +175,7 @@ public class Controller {
         return paddleHit;
     }
 
+    /*
     private void checkPaddleCollision() {
         if (ball.getY() + ball.getDiameter() >= paddle.getY()
                 && ball.getX() >= paddle.getX()
@@ -206,7 +207,7 @@ public class Controller {
                 ball.setDirectionDegrees(-ball.getDirectionDegrees());
             }
 
-             */
+
 
             // ballAngle = ((ball.getDirectionDegrees() % 360) + 360) % 360;
             if (ballAngle == 135) {
@@ -222,6 +223,7 @@ public class Controller {
         }
     }
 
+    */
 
 
 
@@ -229,9 +231,9 @@ public class Controller {
 
         for (Brick brick : bricks) {
             if (!brick.isDestroyed()
-                    && ball.getX() + ball.getDiameter() >= brick.getX()
+                    && ball.getX() + ball.getWidth() >= brick.getX()
                     && ball.getX() <= brick.getX() + brick.getWidth()
-                    && ball.getY() + ball.getDiameter() >= brick.getY()
+                    && ball.getY() + ball.getHeight() >= brick.getY()
                     && ball.getY() <= brick.getY() + brick.getHeight()) {
 
                 brick.setDestroyed(true);

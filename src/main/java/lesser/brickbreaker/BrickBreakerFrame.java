@@ -11,10 +11,11 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BrickBreakerFrame extends JFrame {
 
-    private final Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
+    private final Ball ball = new Ball(390, 510, 20, 20, 1, 45);
 
     private final Paddle paddle = new Paddle(350, 550, 100, 10, 20);
     private final List<Brick> bricks = new ArrayList<>();
@@ -23,6 +24,8 @@ public class BrickBreakerFrame extends JFrame {
     // private boolean ballMoving = false;
     private final Controller controller = new Controller(ball, paddle, bricks, view);
 
+
+   /*
     public BrickBreakerFrame() {
         setSize(800, 600);
         setTitle("Brick Breaker");
@@ -55,6 +58,8 @@ public class BrickBreakerFrame extends JFrame {
 
     }
 
+    */
+
     public BrickBreakerFrame(NeuralNetwork bestNw) {
         setSize(800, 600);
         setTitle("Brick Breaker");
@@ -69,19 +74,17 @@ public class BrickBreakerFrame extends JFrame {
         requestFocusInWindow();
 
         ///controller.initializeBricks();
-        Simulation simulation = new Simulation(bestNw, ball, paddle, getWidth(), getHeight());
+        //long seed = 1810913262880541491L;
+        long seed = new Random().nextLong();
+        Simulation simulation = new Simulation(bestNw, seed, ball, paddle, getWidth(), getHeight());
 
         if (bestNw != null) {
 
-            Timer gameTimer = new Timer(50, e -> {
-
-                simulation.startGame();
-
-                int round = 0;
-                while (round < 10000 && simulation.advance()) {
-                    round++;
+            Timer gameTimer = new Timer(1, e -> {
+                if (!simulation.isGameStopped()) {
+                    simulation.advance();
+                    view.repaint();
                 }
-            view.repaint();
             });
             gameTimer.start();
         }

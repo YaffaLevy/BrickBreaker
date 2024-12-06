@@ -6,45 +6,52 @@ import levy.brickbreaker.Paddle;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 public class Simulation {
+
+    private final long seed;
+    private Random random;
 
     private NeuralNetwork neuralNetwork;
     private Ball ball;
     private Paddle paddle;
     private int width;
     private int height;
-    private boolean isGameRunning = false;
+    private boolean isGameRunning = true;
     private int paddleHit = 0;
+    private boolean inPaddle = false;
 
-    public Simulation(NeuralNetwork neuralNetwork, Ball ball, Paddle paddle, int width, int height) {
+    public Simulation(NeuralNetwork neuralNetwork, long seed, Ball ball, Paddle paddle, int width, int height) {
+        this.seed = seed;
+        this.random = new Random(seed);
         this.neuralNetwork = neuralNetwork;
         this.ball = ball;
         this.paddle = paddle;
         this.width = width;
         this.height = height;
+        resetGame();
     }
 
     public boolean advance() {
 
-        checkCollisions();
         ball.move();
 
-                double[] input = new double[2];
-                input[0] = ball.x;
-                input[1] = paddle.x;
+        double[] input = new double[2];
+        input[0] = ball.getCenterX();
+        input[1] = paddle.getCenterX();
 
-                double[] answer = neuralNetwork.guess(input);
+        double[] answer = neuralNetwork.guess(input);
+        double leftConfidence = answer[0];
+        double rightConfidence = answer[1];
 
-                double leftConfidence = answer[0];
-                double rightConfidence = answer[1];
+        if (leftConfidence > rightConfidence) {
+            movePaddleLeft();
+        } else {
+            movePaddleRight();
+        }
 
-
-                if (leftConfidence > rightConfidence) {
-                    movePaddleLeft();
-                } else {
-                    movePaddleRight();
-                }
+        checkCollisions();
 
         return !(ball.getY() >= height);
 
@@ -61,9 +68,10 @@ public class Simulation {
 
         if (ball.getX() <= 0) {
             ball.collidesLeftWall();
-        }
-        else if (ball.getX() >= width - ball.getDiameter()) {
+        } else if (ball.getX() >= width - ball.getWidth()) {
             ball.collidesRightWall();
+        } else if (ball.getY() >= height) {
+            stopGame();
         }
     }
 
@@ -74,20 +82,21 @@ public class Simulation {
     }
 
     public void brickCollision(){
-        return;
     }
 
     public void paddleCollision() {
 
         if (ball.collides(paddle)) {
-            ball.dy = -ball.dy;
-            ball.dx = ((paddle.getCenterX() - ball.getCenterX()) / (paddle.width)/2);
-            paddleHit++;
-        } else if (ball.getY() >= height) {
-            stopGame();
+            if (!inPaddle) {
+                ball.dy = -Math.abs(ball.dy);
+                //ball.dx = ((paddle.getCenterX() - ball.getCenterX()) / (paddle.width) / 2);
+                paddleHit++;
+                System.out.println("Score: " + paddleHit);
+                inPaddle = true;
+            }
+            return;
         }
-
-
+        inPaddle = false;
     }
 
     private void movePaddleLeft() {
@@ -102,22 +111,19 @@ public class Simulation {
 
     }
 
-    public void startGame() {
-        isGameRunning = true;
-    }
-
     public void stopGame() {
         isGameRunning = false;
     }
 
     public void resetGame() {
-        ball.setX(390);
+        ball.setX(random.nextInt(800));
         ball.setY(510);
         ball.setDirectionDegrees(45);
         ball.initializeVelocity();
-        paddle.setX(350);
+        paddle.setX(random.nextInt(800));
         paddle.setY(550);
-        isGameRunning = false;
+        isGameRunning = true;
+        inPaddle = false;
         // resetBricks();
         paddleHit = 0;
     }
@@ -131,4 +137,7 @@ public class Simulation {
         return paddleHit;
     }
 
+    public long getSeed() {
+        return seed;
+    }
 }

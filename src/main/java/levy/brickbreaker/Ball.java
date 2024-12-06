@@ -3,20 +3,17 @@ package levy.brickbreaker;
 import java.awt.geom.Ellipse2D;
 
 public class Ball extends Ellipse2D.Double {
-    private double diameter;
     private double directionDegrees;
     private double speed;
-    public double dx;
-    public double dy;
+    public double dx = 1;
+    public double dy = -1;
 
-    public Ball(double x, double y, double height, double width,
-                double diameter, double speed, double directionDegree) {
+    public Ball(double x, double y, double height, double width, double speed, double directionDegree) {
 
         super(x, y, width, height);
-        this.diameter = diameter;
         this.speed = speed;
         this.directionDegrees = directionDegree;
-        initializeVelocity();
+        //initializeVelocity();
 
     }
 
@@ -27,6 +24,8 @@ public class Ball extends Ellipse2D.Double {
     }
 
     public boolean collides(Paddle paddle) {
+        return this.getBounds().intersects(paddle);
+        /*
         if (getY() + getDiameter() >= paddle.getY()
                 && getX() >= paddle.getX()
                 && getX() <= paddle.getX() + paddle.getWidth()) {
@@ -34,6 +33,8 @@ public class Ball extends Ellipse2D.Double {
             return true;
         }
         return false;
+
+         */
     }
 
     public void collidesRightWall() {
@@ -46,7 +47,7 @@ public class Ball extends Ellipse2D.Double {
     }
 
     public void collidesTopWall() {
-        dy = -dy;
+        dy = Math.abs(dy);
     }
 
 
@@ -58,14 +59,10 @@ public class Ball extends Ellipse2D.Double {
         return speed;
     }
 
-    public double getDiameter() {
-
-        return diameter;
-    }
-
     public void setDirectionDegrees(double directionDegrees) {
 
         this.directionDegrees = directionDegrees;
+        initializeVelocity();
     }
 
     public void setX(double x) {
@@ -77,9 +74,11 @@ public class Ball extends Ellipse2D.Double {
     }
 
     public void initializeVelocity() {
-        double radians = Math.toRadians(directionDegrees);
-        dx = speed * Math.cos(radians);
-        dy = speed * Math.sin(radians);
+//        double radians = Math.toRadians(directionDegrees);
+//        dx = speed * Math.cos(radians);
+//        dy = speed * Math.sin(radians);
+        dx = 1;
+        dy = -1;
     }
 
     @Override
