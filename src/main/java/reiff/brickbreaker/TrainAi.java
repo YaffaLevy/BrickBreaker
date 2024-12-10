@@ -64,7 +64,8 @@ public class TrainAi {
 
         for (NeuralNetwork neuralNetwork : currentGeneration) {
 
-            Simulation simulation = new Simulation(neuralNetwork, random.nextLong(), ball, paddle, 800, 600, brickFactory);
+            Simulation simulation = new Simulation(neuralNetwork, random.nextLong(), ball,
+                    paddle, 800, 600, brickFactory);
 
             int round = 0;
             while (round < 10000 && simulation.advance()) {

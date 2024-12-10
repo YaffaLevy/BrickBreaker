@@ -22,12 +22,12 @@ public class BrickFactory {
         Random random = new Random();
         int cols = screenWidth / (brickWidth + 10);
         int rows = screenHeight / (brickHeight + 10);
-        int xOffset = (screenWidth - (cols * (brickWidth + 10) - 10)) / 2;
+        int xoffset = (screenWidth - (cols * (brickWidth + 10) - 10)) / 2;
 
         int col = random.nextInt(cols);
         int row = random.nextInt(rows);
 
-        int x = xOffset + col * (brickWidth + 10);
+        int x = xoffset + col * (brickWidth + 10);
         int y = 50 + row * (brickHeight + 10);
 
         return new Brick(x, y, brickWidth, brickHeight);

@@ -17,40 +17,40 @@ public class BrickBreakerFrame extends JFrame {
     private final JLabel scoreLabel;
     private final JLabel gameOverLabel;
 
-   /*
-    public BrickBreakerFrame() {
-        setSize(800, 600);
-        setTitle("Brick Breaker");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+       /*
+        public BrickBreakerFrame() {
+            setSize(800, 600);
+            setTitle("Brick Breaker");
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            setLocationRelativeTo(null);
 
-        add(view);
-        view.setBounds(0, 0, 800, 600);
-        setVisible(true);
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                controller.handleKeyEvent(e.getKeyCode());
-            }
-        });
+            add(view);
+            view.setBounds(0, 0, 800, 600);
+            setVisible(true);
+            addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    controller.handleKeyEvent(e.getKeyCode());
+                }
+            });
 
-        setFocusable(true);
-        requestFocusInWindow();
+            setFocusable(true);
+            requestFocusInWindow();
 
-        controller.initializeBricks();
+            controller.initializeBricks();
 
-        Timer gameTimer = new Timer(10, e -> {
-            if (!controller.isGameStopped()) {
-                controller.updateBallPosition();
-            }
+            Timer gameTimer = new Timer(10, e -> {
+                if (!controller.isGameStopped()) {
+                    controller.updateBallPosition();
+                }
 
-            view.repaint();
-        });
-        gameTimer.start();
+                view.repaint();
+            });
+            gameTimer.start();
 
-    }
+        }
 
-    */
+        */
 
 
     public BrickBreakerFrame(NeuralNetwork bestNw) {

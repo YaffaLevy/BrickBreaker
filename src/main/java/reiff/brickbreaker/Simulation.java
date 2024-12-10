@@ -25,7 +25,9 @@ public class Simulation {
     private final BrickFactory brickFactory;
 
 
-    public Simulation(NeuralNetwork neuralNetwork, long seed, Ball ball, Paddle paddle, int width, int height, BrickFactory brickFactory) {
+    public Simulation(NeuralNetwork neuralNetwork, long seed, Ball ball, Paddle paddle,
+                      int width, int height, BrickFactory brickFactory) {
+
         this.seed = seed;
         this.random = new Random(seed);
         this.neuralNetwork = neuralNetwork;
@@ -170,7 +172,7 @@ public class Simulation {
         return seed;
     }
 
-    public Brick getBrick(){
+    public Brick getBrick() {
         return this.brick;
     }
 }

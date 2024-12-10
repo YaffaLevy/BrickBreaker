@@ -19,7 +19,7 @@ public class BrickBreakerComponent extends JComponent {
 
     }
 
-    public void setBrick(Brick newBrick){
+    public void setBrick(Brick newBrick) {
         this.brick = newBrick;
     }
 
