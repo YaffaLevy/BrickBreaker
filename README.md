@@ -1,22 +1,36 @@
-# Brick Breaker Game 
+# Brick Breaker Game
 
-Welcome to Brick Breaker! This is a classic arcade-style game made with Java, where your goal is simple: 
-break all the bricks on the screen by bouncing a ball off a paddle you control.
-
+Welcome to Brick Breaker!
+This project takes the classic arcade-style game to the next level by integrating AI trained using a genetic algorithm.
+While you can still play the game manually, the primary focus is on the AI's ability to learn how to control the paddle and aim at a brick.
 ### What's Inside
-Fun Gameplay: Control a paddle to keep the ball in play and smash through bricks.
-Realistic Ball Movement: The ball reflects off walls, the paddle, and bricks at different angles to keep things interesting.
-Brick Destruction: Each brick breaks when the ball hits it – keep going until all bricks are gone to win
-Game Reset: Miss the ball? The game resets so you can try again.
-Smooth Collision Detection: Handles bounces off walls, paddle, and bricks so the game feels natural and challenging.
+AI-Powered Gameplay: The AI controls the paddle, learning to keep the ball in play and aim effectively at a brick over time.
+Genetic Algorithm for Training: The AI is trained using genetic algorithms, where a population of neural networks evolves through selection, crossover, and mutation.
+Over generations, the AI becomes increasingly skilled at aiming and staying alive.
 
-[wiki](https://en.wikipedia.org/wiki/Brick_Breaker)
-![game](screenshots/game.png)
+#### Training Process:
 
-### Technology 
+Population: 1000 AI agents per generation.
+
+Selection: The top 10 agents with the highest scores are chosen as parents.
+
+Crossover: Parent networks merge to create offspring.
+
+Mutation: A small mutation rate ensures the AI explores new strategies.
+
+
+[Brick Breaker Wikipedia](https://en.wikipedia.org/wiki/Brick_Breaker)
+
+![Demo GIF](screenshots/gameVideo.gif)
+
+![game](screenshots/gameScreenShot.png)
+
+### Technology
 [KeyListener](https://www.geeksforgeeks.org/java-keylistener-in-awt/)
+* [Genetic Algorithm](https://en.wikipedia.org/wiki/Genetic_algorithm)
+* [Neural Networks](https://github.com/kim-marcel/basic_neural_network)
 
 ### Contributors
-* Yaffa Levy [YaffaLevy](https://github.com/YaffaLevy)
-* Sheila Reiff [SheyReiff](https://github.com/SheyReiff)
-* Lauren Lesser [Lauren34](https://github.com/Lauren34)
+* [SheyReiff](https://github.com/SheyReiff)
+* [YaffaLevy](https://github.com/YaffaLevy)
+*  [Lauren Lesser](https://github.com/Lauren34)

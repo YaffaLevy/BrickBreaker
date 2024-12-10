@@ -1,12 +1,8 @@
 package reiff.brickbreaker;
 
 import levy.brickbreaker.Ball;
-import levy.brickbreaker.Brick;
 import levy.brickbreaker.Paddle;
 import basicneuralnetwork.NeuralNetwork;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -21,34 +17,28 @@ public class TrainAi {
 
         Ball ball = new Ball(390, 510, 20, 20, 1, 45);
         Paddle paddle = new Paddle(350, 550, 100, 10, 20);
-        List<Brick> bricks = new ArrayList<>();
         Random random = new Random();
 
         ManyNetworks manyNetworks = new ManyNetworks();
+        BrickFactory brickFactory = new BrickFactory(800, 600, 60, 20);
 
         List<NeuralNetwork> currentGeneration = manyNetworks.generateNetworks();
-
-        List<NetworkAndScore> trained = play(random, currentGeneration, ball, paddle);
-
+        List<NetworkAndScore> trained = play(random, currentGeneration, ball, paddle, brickFactory);
         List<NetworkAndScore> topPerformingWithScores = manyNetworks.getTop10NetworksWithScores(trained);
 
 
-        for (int generation = 0; generation < 5; generation++) {
+        for (int generation = 0; generation < 100; generation++) {
             System.out.println("Generation: " + (generation + 1));
 
-            // Extract just the networks for the next generation (to play we need a list of neural networks)
             List<NeuralNetwork> topPerformingNetworks = topPerformingWithScores.stream()
                     .map(NetworkAndScore::getNetwork)
                     .collect(Collectors.toList());
 
-            // Create the next generation based on the top-performing networks
             currentGeneration = manyNetworks.createNextGeneration(topPerformingNetworks);
 
-            trained = play(random, currentGeneration, ball, paddle);
-            // Let the new generation play and determine the top 10 networks with scores
+            trained = play(random, currentGeneration, ball, paddle, brickFactory);
             topPerformingWithScores = manyNetworks.getTop10NetworksWithScores(trained);
 
-            // Print the scores for the top 10 networks
             System.out.println("Top 10 Scores for Generation " + (generation + 1) + ":");
             for (int i = 0; i < topPerformingWithScores.size(); i++) {
                 NetworkAndScore entry = topPerformingWithScores.get(i);
@@ -56,36 +46,25 @@ public class TrainAi {
             }
         }
 
-        // Step 4: Find and store the best network
         NetworkAndScore bestNetworkAndScore = topPerformingWithScores.stream()
                 .max(Comparator.comparingInt(NetworkAndScore::getScore)) // Find the highest score
-                .orElseThrow(() -> new IllegalStateException("No networks available")); // Handle empty list case
+                .orElseThrow(() -> new IllegalStateException("No networks available"));
 
         System.out.println(bestNetworkAndScore);
-        NeuralNetwork bestNetwork = bestNetworkAndScore.getNetwork(); // Extract the best network
+        NeuralNetwork bestNetwork = bestNetworkAndScore.getNetwork();
 
         bestNetwork.writeToFile("BestNW");
-        //InputStream in = TrainAi.class.getClassLoader().getResourceAsStream("BestNW.json");
-       /*
-        try {
-            InputStream in = TrainAi.class.getClassLoader().getResourceAsStream("BestNW.json");
-        } catch (IOException e) {
-            // Handle any exceptions silently
-
-        }
-
-        */
-        // Output the best network's details
         System.out.println("Best Network's Score: " + bestNetworkAndScore.getScore());
 
     }
 
-    private static List<NetworkAndScore> play(Random random, List<NeuralNetwork> currentGeneration, Ball ball, Paddle paddle) {
+    private static List<NetworkAndScore> play(Random random, List<NeuralNetwork> currentGeneration,
+                                              Ball ball, Paddle paddle, BrickFactory brickFactory) {
         List<NetworkAndScore> performanceList = new ArrayList<>();
 
         for (NeuralNetwork neuralNetwork : currentGeneration) {
 
-            Simulation simulation = new Simulation(neuralNetwork, random.nextLong(), ball, paddle, 800, 600);
+            Simulation simulation = new Simulation(neuralNetwork, random.nextLong(), ball, paddle, 800, 600, brickFactory);
 
             int round = 0;
             while (round < 10000 && simulation.advance()) {

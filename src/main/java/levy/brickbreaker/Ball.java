@@ -4,7 +4,7 @@ import java.awt.geom.Ellipse2D;
 
 public class Ball extends Ellipse2D.Double {
     private double directionDegrees;
-    private double speed;
+    private final double speed;
     public double dx = 1;
     public double dy = -1;
 
@@ -13,7 +13,6 @@ public class Ball extends Ellipse2D.Double {
         super(x, y, width, height);
         this.speed = speed;
         this.directionDegrees = directionDegree;
-        //initializeVelocity();
 
     }
 
@@ -25,16 +24,7 @@ public class Ball extends Ellipse2D.Double {
 
     public boolean collides(Paddle paddle) {
         return this.getBounds().intersects(paddle);
-        /*
-        if (getY() + getDiameter() >= paddle.getY()
-                && getX() >= paddle.getX()
-                && getX() <= paddle.getX() + paddle.getWidth()) {
 
-            return true;
-        }
-        return false;
-
-         */
     }
 
     public void collidesRightWall() {
@@ -50,6 +40,9 @@ public class Ball extends Ellipse2D.Double {
         dy = Math.abs(dy);
     }
 
+    public void collidesBrick() {
+        dy = Math.abs(dy);
+    }
 
     public double getDirectionDegrees() {
         return directionDegrees;
@@ -74,9 +67,6 @@ public class Ball extends Ellipse2D.Double {
     }
 
     public void initializeVelocity() {
-//        double radians = Math.toRadians(directionDegrees);
-//        dx = speed * Math.cos(radians);
-//        dy = speed * Math.sin(radians);
         dx = 1;
         dy = -1;
     }

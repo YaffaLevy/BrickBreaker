@@ -6,19 +6,21 @@ import levy.brickbreaker.Brick;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
-import java.util.Random;
 
 public class BrickBreakerComponent extends JComponent {
     private final Ball ball;
     private final Paddle paddle;
-    private final List<Brick> bricks;
+    private Brick brick;
 
-    public BrickBreakerComponent(Ball ball, Paddle paddle, List<Brick> bricks) {
+    public BrickBreakerComponent(Ball ball, Paddle paddle, Brick brick) {
         this.ball = ball;
         this.paddle = paddle;
-        this.bricks = bricks;
+        this.brick = brick;
 
+    }
+
+    public void setBrick(Brick newBrick){
+        this.brick = newBrick;
     }
 
     @Override
@@ -39,12 +41,11 @@ public class BrickBreakerComponent extends JComponent {
         g2.setColor(Color.WHITE);
         g2.fillOval((int) ball.getX(), (int) ball.getY(), (int) ball.getWidth(), (int) ball.getHeight());
 
-        // Draw bricks
-        for (Brick brick : bricks) {
-            if (!brick.isDestroyed()) {
-                g2.setColor(brick.getColor());
-                g2.fill(brick);
-            }
+        // Draw brick
+        if (!brick.isDestroyed()) {
+            g2.setColor(brick.getColor());
+            g2.fill(brick);
         }
     }
 }
+

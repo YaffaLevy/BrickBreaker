@@ -4,10 +4,10 @@ import basicneuralnetwork.NeuralNetwork;
 
 public class NetworkAndScore {
 
-    private NeuralNetwork network;
-    private int score;
+    private final NeuralNetwork network;
+    private final int score;
 
-    private long seed;
+    private final long seed;
 
     public NetworkAndScore(NeuralNetwork network, int score, long seed) {
         this.network = network;
@@ -25,10 +25,14 @@ public class NetworkAndScore {
 
     @Override
     public String toString() {
-        return "NetworkAndScore{" +
-                "network=" + network +
-                ", score=" + score +
-                ", seed=" + seed +
+        return "NetworkAndScore{"
+                +
+                "network=" + network
+                +
+                ", score=" + score
+                +
+                ", seed=" + seed
+                +
                 '}';
     }
 }

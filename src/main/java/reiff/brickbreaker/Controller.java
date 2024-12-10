@@ -59,12 +59,7 @@ public class Controller {
             return;
         }
 
-               double radians = Math.toRadians(ball.getDirectionDegrees());
-        double dx = Math.cos(radians) * ball.getSpeed();
-        double dy = Math.sin(radians) * ball.getSpeed();
-
-        ball.setX(ball.getX() + dx);
-        ball.setY(ball.getY() + dy);
+        ball.move();
 
         checkCollisions();
         view.repaint();
@@ -224,7 +219,6 @@ public class Controller {
     }
 
     */
-
 
 
     private void checkBrickCollisions() {

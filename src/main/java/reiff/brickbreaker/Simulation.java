@@ -2,27 +2,30 @@ package reiff.brickbreaker;
 
 import basicneuralnetwork.NeuralNetwork;
 import levy.brickbreaker.Ball;
+import levy.brickbreaker.Brick;
 import levy.brickbreaker.Paddle;
-
-import javax.swing.*;
-import java.awt.event.KeyEvent;
 import java.util.Random;
 
 public class Simulation {
 
     private final long seed;
-    private Random random;
+    private final Random random;
 
-    private NeuralNetwork neuralNetwork;
-    private Ball ball;
-    private Paddle paddle;
-    private int width;
-    private int height;
+    private final NeuralNetwork neuralNetwork;
+    private final Ball ball;
+    private final Paddle paddle;
+    private final int width;
+    private final int height;
+    private Brick brick;
     private boolean isGameRunning = true;
-    private int paddleHit = 0;
     private boolean inPaddle = false;
+    private boolean hitBrick = false;
+    private boolean hitPaddle = false;
+    private int score = 0;
+    private final BrickFactory brickFactory;
 
-    public Simulation(NeuralNetwork neuralNetwork, long seed, Ball ball, Paddle paddle, int width, int height) {
+
+    public Simulation(NeuralNetwork neuralNetwork, long seed, Ball ball, Paddle paddle, int width, int height, BrickFactory brickFactory) {
         this.seed = seed;
         this.random = new Random(seed);
         this.neuralNetwork = neuralNetwork;
@@ -30,16 +33,22 @@ public class Simulation {
         this.paddle = paddle;
         this.width = width;
         this.height = height;
+        this.brickFactory = brickFactory;
+        this.brick = brickFactory.newBrick();
         resetGame();
+
     }
+
 
     public boolean advance() {
 
         ball.move();
 
-        double[] input = new double[2];
+        double[] input = new double[4];
         input[0] = ball.getCenterX();
         input[1] = paddle.getCenterX();
+        input[2] = brick.getCenterX();
+        input[3] = brick.getCenterY();
 
         double[] answer = neuralNetwork.guess(input);
         double leftConfidence = answer[0];
@@ -81,7 +90,24 @@ public class Simulation {
         }
     }
 
-    public void brickCollision(){
+    public void brickCollision() {
+        if (!brick.isDestroyed()
+                && ball.getX() + ball.getWidth() >= brick.getX()
+                && ball.getX() <= brick.getX() + brick.getWidth()
+                && ball.getY() + ball.getHeight() >= brick.getY()
+                && ball.getY() <= brick.getY() + brick.getHeight()) {
+
+            brick.setDestroyed(true);
+            ball.collidesBrick();
+            hitBrick = true;
+
+            if (hitPaddle) {
+                score++;
+                hitPaddle = false;
+            }
+
+            brick = brickFactory.newBrick();
+        }
     }
 
     public void paddleCollision() {
@@ -89,10 +115,13 @@ public class Simulation {
         if (ball.collides(paddle)) {
             if (!inPaddle) {
                 ball.dy = -Math.abs(ball.dy);
-                //ball.dx = ((paddle.getCenterX() - ball.getCenterX()) / (paddle.width) / 2);
-                paddleHit++;
-                System.out.println("Score: " + paddleHit);
+                ball.dx = ((paddle.getCenterX() - ball.getCenterX()) / (paddle.width) / 2);
                 inPaddle = true;
+
+                if (hitBrick) {
+                    score++;
+                    hitBrick = false;
+                }
             }
             return;
         }
@@ -124,8 +153,8 @@ public class Simulation {
         paddle.setY(550);
         isGameRunning = true;
         inPaddle = false;
-        // resetBricks();
-        paddleHit = 0;
+        hitBrick = false;
+        hitPaddle = false;
     }
 
     public boolean isGameStopped() {
@@ -134,10 +163,16 @@ public class Simulation {
 
 
     public int getScore() {
-        return paddleHit;
+        return score;
     }
 
     public long getSeed() {
         return seed;
     }
+
+    public Brick getBrick(){
+        return this.brick;
+    }
 }
+
+

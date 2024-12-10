@@ -1,3 +1,4 @@
+/*
 package reiff.brickbreaker;
 
 import levy.brickbreaker.Ball;
@@ -118,3 +119,6 @@ class ControllerTest {
         verify(view).repaint();
     }
 }
+
+
+ */

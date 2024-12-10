@@ -4,7 +4,7 @@ import java.awt.geom.Rectangle2D;
 
 public class Paddle extends Rectangle2D.Double {
 
-    private int speed;
+    private final int speed;
 
     public Paddle(double x, double y, double width, double height, int speed) {
 
@@ -16,10 +16,6 @@ public class Paddle extends Rectangle2D.Double {
 
     public int getSpeed() {
         return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
     }
 
     public void setX(double x) {
