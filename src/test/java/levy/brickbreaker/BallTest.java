@@ -10,7 +10,7 @@ class BallTest {
     void move() {
 
         //give
-        Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
+        Ball ball = new Ball(390, 510, 20, 20, 20, 45);
         ball.dx = 5;
         ball.dy = 3;
         //when
@@ -25,7 +25,7 @@ class BallTest {
     void collides() {
         //given
 
-        Ball ball = new Ball(350.5, 550, 20, 20, 20, 5, 45);
+        Ball ball = new Ball(350.5, 550, 20, 20, 20, 45);
         Paddle paddle = new Paddle(350, 550, 100, 10, 20);
 
         //when
@@ -39,7 +39,7 @@ class BallTest {
     void collidesRightWall() {
 
         //given
-        Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
+        Ball ball = new Ball(390, 510, 20, 20, 20, 45);
         ball.dx = 5;
 
         //when
@@ -53,7 +53,7 @@ class BallTest {
     @Test
     void collidesLeftWall() {
         //given
-        Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
+        Ball ball = new Ball(390, 510, 20, 20, 20, 45);
         ball.dx = -4;
 
         //when
@@ -67,12 +67,12 @@ class BallTest {
     void collidesTopWall() {
 
         //given
-        Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
+        Ball ball = new Ball(390, 510, 20, 20, 20, 45);
         ball.dy = 3;
         //when
         ball.collidesTopWall();
 
         //then
-        assertEquals(-3, ball.dy);
+        assertEquals(3, ball.dy);
     }
 }
