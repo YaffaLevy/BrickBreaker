@@ -2,7 +2,7 @@
 
 Welcome to Brick Breaker!
 This project takes the classic arcade-style game to the next level by integrating AI trained using a genetic algorithm.
-While you can still play the game manually, the primary focus is on the AI's ability to learn how to control the paddle and aim at a brick.
+The primary focus is on the AI's ability to learn how to control the paddle and aim at a brick.
 ### What's Inside
 AI-Powered Gameplay: The AI controls the paddle, learning to keep the ball in play and aim effectively at a brick over time.
 Genetic Algorithm for Training: The AI is trained using genetic algorithms, where a population of neural networks evolves through selection, crossover, and mutation.
