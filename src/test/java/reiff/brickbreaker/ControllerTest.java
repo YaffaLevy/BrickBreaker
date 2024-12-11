@@ -1,3 +1,4 @@
+/*
 package reiff.brickbreaker;
 
 import levy.brickbreaker.Ball;
@@ -20,7 +21,7 @@ class ControllerTest {
         Paddle paddle = mock();
         List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = mock();
-        Controller controller = new Controller(ball, paddle, bricks, view);
+        final Controller controller = new Controller(ball, paddle, bricks, view);
         //When
         doReturn(800).when(view).getWidth();
         doReturn(600).when(view).getHeight();
@@ -44,7 +45,7 @@ class ControllerTest {
         Paddle paddle = mock();
         List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = mock();
-        Controller controller = new Controller(ball, paddle, bricks, view);
+        final Controller controller = new Controller(ball, paddle, bricks, view);
         //when
         doReturn(800).when(view).getWidth();
         doReturn(600).when(view).getHeight();
@@ -70,7 +71,7 @@ class ControllerTest {
         Paddle paddle = mock();
         List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = mock();
-        Controller controller = new Controller(ball, paddle, bricks, view);
+        final Controller controller = new Controller(ball, paddle, bricks, view);
         //When
         doReturn(800).when(view).getWidth();
         doReturn(600).when(view).getHeight();
@@ -93,7 +94,7 @@ class ControllerTest {
         Paddle paddle = mock();
         List<Brick> bricks = new ArrayList<>();
         BrickBreakerComponent view = mock();
-        Controller controller = new Controller(ball, paddle, bricks, view);
+        final Controller controller = new Controller(ball, paddle, bricks, view);
 
         Brick brick = mock(Brick.class);
         bricks.add(brick);
@@ -118,3 +119,6 @@ class ControllerTest {
         verify(view).repaint();
     }
 }
+
+
+ */

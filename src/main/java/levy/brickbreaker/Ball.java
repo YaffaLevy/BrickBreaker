@@ -3,17 +3,45 @@ package levy.brickbreaker;
 import java.awt.geom.Ellipse2D;
 
 public class Ball extends Ellipse2D.Double {
-    private double diameter;
     private double directionDegrees;
-    private double speed;
+    private final double speed;
+    public double dx = 1;
+    public double dy = -1;
 
-    public Ball(double x, double y, double height, double width, double diameter, double speed, double directionDegree) {
+    public Ball(double x, double y, double height, double width, double speed, double directionDegree) {
 
         super(x, y, width, height);
-        this.diameter = diameter;
         this.speed = speed;
         this.directionDegrees = directionDegree;
 
+    }
+
+    public void move() {
+
+        x += dx;
+        y += dy;
+    }
+
+    public boolean collides(Paddle paddle) {
+        return this.getBounds().intersects(paddle);
+
+    }
+
+    public void collidesRightWall() {
+
+        dx = -dx;
+    }
+
+    public void collidesLeftWall() {
+        dx = -dx;
+    }
+
+    public void collidesTopWall() {
+        dy = Math.abs(dy);
+    }
+
+    public void collidesBrick() {
+        dy = Math.abs(dy);
     }
 
     public double getDirectionDegrees() {
@@ -24,14 +52,10 @@ public class Ball extends Ellipse2D.Double {
         return speed;
     }
 
-    public double getDiameter() {
-
-        return diameter;
-    }
-
     public void setDirectionDegrees(double directionDegrees) {
 
         this.directionDegrees = directionDegrees;
+        initializeVelocity();
     }
 
     public void setX(double x) {
@@ -42,4 +66,21 @@ public class Ball extends Ellipse2D.Double {
         this.y = y;
     }
 
+    public void initializeVelocity() {
+        dx = 1;
+        dy = -1;
+    }
+
+    @Override
+    public String toString() {
+        return "Ball{"
+                +
+                "directionDegrees=" + directionDegrees
+                +
+                ", x=" + x
+                +
+                ", y=" + y
+                +
+                '}';
+    }
 }
