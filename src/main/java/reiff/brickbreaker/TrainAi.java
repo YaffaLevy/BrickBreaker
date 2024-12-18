@@ -3,6 +3,7 @@ package reiff.brickbreaker;
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Paddle;
 import basicneuralnetwork.NeuralNetwork;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -50,12 +51,16 @@ public class TrainAi {
                 .max(Comparator.comparingInt(NetworkAndScore::getScore)) // Find the highest score
                 .orElseThrow(() -> new IllegalStateException("No networks available"));
 
-        System.out.println(bestNetworkAndScore);
-        NeuralNetwork bestNetwork = bestNetworkAndScore.getNetwork();
+        try {
+            System.out.println(bestNetworkAndScore);
+            NeuralNetwork bestNetwork = bestNetworkAndScore.getNetwork();
 
-        bestNetwork.writeToFile("BestNW");
-        System.out.println("Best Network's Score: " + bestNetworkAndScore.getScore());
-
+            bestNetwork.writeToFile("BestNW.json");
+            System.out.println("Best Network's Score: " + bestNetworkAndScore.getScore());
+        } catch (Exception e) { // Catch any exception, including runtime exceptions
+            System.err.println("An unexpected error occurred: " + e.getMessage());
+           e.printStackTrace(); // Optionally include this for debugging purposes
+        }
     }
 
     private static List<NetworkAndScore> play(Random random, List<NeuralNetwork> currentGeneration,
