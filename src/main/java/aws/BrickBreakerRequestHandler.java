@@ -9,7 +9,8 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class BrickBreakerRequestHandler implements RequestHandler<BrickBreakerRequestHandler.BrickBreakerRequest, BrickBreakerRequestHandler.BrickBreakerResponse>
+public class BrickBreakerRequestHandler implements RequestHandler<BrickBreakerRequestHandler.BrickBreakerRequest,
+        BrickBreakerRequestHandler.BrickBreakerResponse>
 {
     private final S3Client s3Client;
 
@@ -17,6 +18,7 @@ public class BrickBreakerRequestHandler implements RequestHandler<BrickBreakerRe
     {
         s3Client = S3Client.create();
     }
+
     @Override
     public BrickBreakerResponse handleRequest(BrickBreakerRequest request, Context context)
     {
@@ -27,13 +29,14 @@ public class BrickBreakerRequestHandler implements RequestHandler<BrickBreakerRe
                     .key("BestNW.json")
                     .build();
             InputStream in = s3Client.getObject(getObjectRequest);
-            NeuralNetwork network = NeuralNetwork.readFromFile(in);
             double guess[] = new double[4];
 
-            guess[0] = request.xBall; // x ball
-            guess[1] = request.xPaddle; //x paddle
-            guess[2] = request.xBrick; // x brick
-            guess[3] = request.yBrick; //y brick
+            guess[0] = request.xball; // x ball
+            guess[1] = request.xpaddle; //x paddle
+            guess[2] = request.xbrick; // x brick
+            guess[3] = request.ybrick; //y brick
+
+            NeuralNetwork network = NeuralNetwork.readFromFile(in);
             double[] output = network.guess(guess);
             BrickBreakerResponse response = new BrickBreakerResponse(output[0], output[1], "");
             return response;
@@ -47,10 +50,10 @@ public class BrickBreakerRequestHandler implements RequestHandler<BrickBreakerRe
 
 
     record BrickBreakerRequest(
-            double xBall,
-            double xPaddle,
-            double xBrick,
-            double yBrick
+            double xball,
+            double xpaddle,
+            double xbrick,
+            double ybrick
     )
 
     {
