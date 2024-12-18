@@ -1,95 +1,110 @@
 package lesser.brickbreaker;
 
+import basicneuralnetwork.NeuralNetwork;
 import levy.brickbreaker.Ball;
 import levy.brickbreaker.Paddle;
 import levy.brickbreaker.Brick;
-import reiff.brickbreaker.Controller;
+import reiff.brickbreaker.BrickFactory;
+import reiff.brickbreaker.Simulation;
 
 import javax.swing.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.*;
 import java.util.Random;
 
 public class BrickBreakerFrame extends JFrame {
-    private static final int COLS = 10;
-    private static final int ROWS = 5;
-    private static final int BRICK_WIDTH = 60;
-    private static final int BRICK_HEIGHT = 20;
-    private static final int SPACING = 10;
 
-    private final Ball ball = new Ball(390, 510, 20, 20, 20, 5, 45);
+    private final BrickBreakerComponent view;
+    private final JLabel scoreLabel;
+    private final JLabel gameOverLabel;
 
-    private final Paddle paddle = new Paddle(350, 550, 100, 10, 60);
-    private final List<Brick> bricks = new ArrayList<>();
-
-    private final BrickBreakerComponent view = new BrickBreakerComponent(ball, paddle, bricks);
-    private boolean ballMoving = false;
-    private final Controller controller = new Controller(ball, paddle, bricks, view);
-
-    public BrickBreakerFrame() {
+    public BrickBreakerFrame(NeuralNetwork bestNw) {
         setSize(800, 600);
         setTitle("Brick Breaker");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        scoreLabel = new JLabel("Score: ");
+        gameOverLabel = new JLabel("Game Over");
+
+        scoreLabel.setBounds(650, 10, 100, 30);
+        gameOverLabel.setBounds(350, 285, 100, 30);
+
+
+        scoreLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        gameOverLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+
+        scoreLabel.setForeground(Color.yellow);
+        gameOverLabel.setForeground(Color.yellow);
+
+        add(scoreLabel);
+        gameOverLabel.setVisible(false);
+        add(gameOverLabel);
+
+
+        BrickFactory brickFactory = new BrickFactory(800, 600, 60, 20);
+        long seed = new Random().nextLong();
+        Ball ball = new Ball(390, 510, 20, 20, 1, 45);
+        Paddle paddle = new Paddle(350, 550, 100, 10, 20);
+        Simulation simulation = new Simulation(bestNw, seed, ball, paddle, getWidth(), getHeight(), brickFactory);
+        Brick brick = simulation.getBrick();
+
+        view = new BrickBreakerComponent(ball, paddle, brick);
         add(view);
         view.setBounds(0, 0, 800, 600);
 
+        setVisible(true);
         setFocusable(true);
         requestFocusInWindow();
 
-        initializeBricks();
+        if (bestNw != null) {
 
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                int keyCode = e.getKeyCode();
-                int paddleSpeed = paddle.getSpeed();
+            Timer gameTimer = new Timer(1, e -> {
+                if (!simulation.isGameStopped()) {
+                    simulation.advance();
+                    view.setBrick(simulation.getBrick());
+                    view.repaint();
 
-                // Move paddle left or right
-                if (keyCode == KeyEvent.VK_LEFT) {
-                    paddle.x = Math.max(0, paddle.x - paddleSpeed);
-                } else if (keyCode == KeyEvent.VK_RIGHT) {
-                    paddle.x = Math.min(view.getWidth() - paddle.width, paddle.x + paddleSpeed);
+                    scoreLabel.setText("Score: " + simulation.getScore());
+                } else {
+                    gameOverLabel.setVisible(true);
                 }
-
-                if (keyCode == KeyEvent.VK_UP && !ballMoving) {
-                    ballMoving = true;
-                    controller.startGame();
-                }
-
-                view.repaint();
-            }
-        });
-
-        Timer gameTimer = new Timer(10, e -> {
-            if (ballMoving) {
-                controller.updateBallPosition();
-            }
-            if (controller.isGameStopped()) {
-                ballMoving = false;
-            }
-            view.repaint();
-        });
-        gameTimer.start();
-
-        setVisible(true);
-    }
-
-    private void initializeBricks() {
-        Random random = new Random();
-        int xoffset = (getWidth() - (COLS * (BRICK_WIDTH + SPACING) - SPACING)) / 2;
-
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLS; col++) {
-                if (random.nextBoolean()) {
-                    int x = xoffset + col * (BRICK_WIDTH + SPACING);
-                    int y = 50 + row * (BRICK_HEIGHT + SPACING);
-                    bricks.add(new Brick(x, y, BRICK_WIDTH, BRICK_HEIGHT));
-                }
-            }
+            });
+            gameTimer.start();
         }
     }
 
+    /*
+        public BrickBreakerFrame() {
+            setSize(800, 600);
+            setTitle("Brick Breaker");
+            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            setLocationRelativeTo(null);
+
+            add(view);
+            view.setBounds(0, 0, 800, 600);
+            setVisible(true);
+            addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    controller.handleKeyEvent(e.getKeyCode());
+                }
+            });
+
+            setFocusable(true);
+            requestFocusInWindow();
+
+            controller.initializeBricks();
+
+            Timer gameTimer = new Timer(10, e -> {
+                if (!controller.isGameStopped()) {
+                    controller.updateBallPosition();
+                }
+
+                view.repaint();
+            });
+            gameTimer.start();
+
+        }
+
+        */
 }

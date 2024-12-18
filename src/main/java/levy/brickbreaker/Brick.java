@@ -3,11 +3,10 @@ package levy.brickbreaker;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Brick extends Rectangle2D.Double {
     private boolean destroyed;
-    private Color color;
+    private final Color color;
 
     public Brick(double x, double y, double width, double height) {
 
@@ -40,10 +39,6 @@ public class Brick extends Rectangle2D.Double {
 
     public Color getColor() {
         return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
     }
 
 }
