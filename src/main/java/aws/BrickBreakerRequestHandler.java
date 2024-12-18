@@ -28,7 +28,6 @@ public class BrickBreakerRequestHandler implements RequestHandler<BrickBreakerRe
                     .bucket("reiff.bbnn")
                     .key("BestNW.json")
                     .build();
-            InputStream in = s3Client.getObject(getObjectRequest);
             double guess[] = new double[4];
 
             guess[0] = request.xball; // x ball
@@ -36,6 +35,7 @@ public class BrickBreakerRequestHandler implements RequestHandler<BrickBreakerRe
             guess[2] = request.xbrick; // x brick
             guess[3] = request.ybrick; //y brick
 
+            InputStream in = s3Client.getObject(getObjectRequest);
             NeuralNetwork network = NeuralNetwork.readFromFile(in);
             double[] output = network.guess(guess);
             BrickBreakerResponse response = new BrickBreakerResponse(output[0], output[1], "");
